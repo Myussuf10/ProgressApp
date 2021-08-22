@@ -8,10 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AdminRepo extends CrudRepository<Admin, Long> {
-
-    @Query
-    Integer getCountByEmail(String email);
-
+public interface AdminRepo extends CrudRepository<Admin, Integer> {
 
 }

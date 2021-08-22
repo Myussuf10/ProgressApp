@@ -1,45 +1,53 @@
 package com.myussuf.myussufprojectspring.Entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
+import java.util.List;
 
-import static javax.persistence.GenerationType.*;
+import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "admin")
-public class Admin{
-
+public class Teacher {
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "admin_adminid_seq")
-    @SequenceGenerator(name="admin_adminid_seq", sequenceName = "admin_adminid_seq", allocationSize = 1)
-    @Column(name = "adminid", updatable = false, nullable = false)
+    @GeneratedValue(strategy = SEQUENCE, generator = "teacher_pkey")
+    @SequenceGenerator(name="teacher_pkey", sequenceName = "teacher_pkey", allocationSize = 1)
+    @Column(name = "teacherid", updatable = false, nullable = false)
     private int id;
 
     private String firstname;
 
-    @Column(name = "lastname")
     private String lastname;
 
-    @Column(name = "email")
     @Email
     private String email;
 
-    @Column(name = "password")
     private String password;
 
+    @OneToMany(mappedBy = "teacher", cascade = {CascadeType.DETACH,
+            CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "teacher-subject")
+    private List<Subject> subjects;
 
-    public Admin() {
-
+    public List<Subject> getSubjects() {
+        return subjects;
     }
 
-    public Admin(String firstname,
-                 String lastname,
-                 String email,
-                 String password) {
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
+    public Teacher(String firstname, String lastname, String email, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
+    }
+
+    public Teacher() {
+
     }
 
     public int getId() {
@@ -82,9 +90,24 @@ public class Admin{
         this.password = password;
     }
 
+    //Convenience method for bi-directional relationship
+
+    public void addSubject(Subject subject){
+        if(subjects == null){
+            subjects = new ArrayList<>();
+        }
+        subjects.add(subject);
+        subject.setTeacher(this);
+    }
+
+    public void removeSubject(Subject subject){
+        subjects.remove(subject);
+        subject.setTeacher(null);
+    }
+
     @Override
     public String toString() {
-        return "Admin{" +
+        return "Teacher{" +
                 "id=" + id +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +

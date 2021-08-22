@@ -1,45 +1,63 @@
 package com.myussuf.myussufprojectspring.Entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
-import static javax.persistence.GenerationType.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "admin")
-public class Admin{
+public class Parent {
 
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "admin_adminid_seq")
-    @SequenceGenerator(name="admin_adminid_seq", sequenceName = "admin_adminid_seq", allocationSize = 1)
-    @Column(name = "adminid", updatable = false, nullable = false)
+    @GeneratedValue(strategy = SEQUENCE, generator = "student_pkey")
+    @SequenceGenerator(name="student_pkey", sequenceName = "student_pkey", allocationSize = 1)
+    @Column(name = "parentid", updatable = false, nullable = false)
     private int id;
 
     private String firstname;
 
-    @Column(name = "lastname")
     private String lastname;
 
-    @Column(name = "email")
     @Email
     private String email;
 
-    @Column(name = "password")
     private String password;
 
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "parent-child")
+    private List<Student> children;
 
-    public Admin() {
-
-    }
-
-    public Admin(String firstname,
-                 String lastname,
-                 String email,
-                 String password) {
+    public Parent(String firstname, String lastname, String email, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.password = password;
+    }
+
+    public Parent() {
+
+    }
+
+    public List<Student> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Student> children) {
+        this.children = children;
+    }
+// convenience method add student
+
+    public void add(Student child){
+        if(children == null){
+            children = new ArrayList<>();
+        }
+        children.add(child);
+
     }
 
     public int getId() {
@@ -84,7 +102,7 @@ public class Admin{
 
     @Override
     public String toString() {
-        return "Admin{" +
+        return "Parent{" +
                 "id=" + id +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
