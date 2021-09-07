@@ -29,7 +29,6 @@ public class Student {
     private String lastname;
 
     @Past(message = "Date of birth must be in the past")
-    @Temporal(TemporalType.DATE)
     private Date dob;
 
     private String school;

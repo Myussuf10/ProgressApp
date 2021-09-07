@@ -1,8 +1,8 @@
 package com.myussuf.myussufprojectspring.Entities;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Time;
+import java.util.Date;
 
 @Entity
 @Table(name = "class")
@@ -16,7 +16,7 @@ public class Class {
     private Date date;
 
     @Column(name = "classtime")
-    @Temporal(TemporalType.TIME)
+//    @Temporal(TemporalType.TIME)
     private Time time;
 
     @OneToOne(cascade = {CascadeType.PERSIST,
