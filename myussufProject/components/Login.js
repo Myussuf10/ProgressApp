@@ -15,6 +15,7 @@ import {
   Button,
 } from 'react-native';
 import ForgotPassword from './ForgotPassword.js';
+import Teacher from './Teacher.js';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState(' ');
@@ -40,6 +41,7 @@ const Login = ({navigation}) => {
       <TouchableOpacity title="LogIn" onPress={login} style={styles.button}>
         <Text style={styles.txt}> Login </Text>
       </TouchableOpacity>
+      
       <TouchableOpacity
         title="ForgotPassword"
         onPress={() => {
@@ -48,6 +50,10 @@ const Login = ({navigation}) => {
         style={styles.button}>
         <Text style={styles.txt}> Forgot Password </Text>
       </TouchableOpacity>
+
+      <Button onPress={()=>{
+        navigation.navigate('Teacher');
+      }} title="Teacher" /> 
     </KeyboardAvoidingView>
   );
 };
