@@ -16,7 +16,8 @@ import {
 } from 'react-native';
 import Login from './components/Login.js';
 import ForgotPassword from './components/ForgotPassword.js';
-import Teacher from './components/Teacher.js';
+import Parent from './components/Parent.js';
+import SignUp from './components/Forms/SignUp.js';
 
 const Stack = createStackNavigator();
 
@@ -34,7 +35,8 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={globalScreenOptions} initialRouteName="Login">
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Teacher" component={Teacher} />
+        <Stack.Screen name="Parent" component={Parent} />
+        <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       </Stack.Navigator>
     </NavigationContainer>

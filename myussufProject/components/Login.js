@@ -15,7 +15,8 @@ import {
   Button,
 } from 'react-native';
 import ForgotPassword from './ForgotPassword.js';
-import Teacher from './Teacher.js';
+import Parent from './Parent.js';
+import SignUp from './Forms/SignUp.js';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState(' ');
@@ -23,44 +24,50 @@ const Login = ({navigation}) => {
 
   const login = () => {};
   return (
-    <KeyboardAvoidingView behavior="height" style={styles.background}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Email"
-          style={styles.txt2}
-          placeholderTextColor="black"
-          onChangeText={val => setEmail(val)}
-        />
-        <TextInput
-          placeholder="Password"
-          placeholderTextColor="black"
-          style={styles.txt2}
-          onChangeText={val => setPassword(val)}
-        />
-      </View>
-      <TouchableOpacity title="LogIn" onPress={login} style={styles.button}>
-        <Text style={styles.txt}> Login </Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity
-        title="ForgotPassword"
-        onPress={() => {
-          navigation.navigate('ForgotPassword');
-        }}
-        style={styles.button}>
-        <Text style={styles.txt}> Forgot Password </Text>
-      </TouchableOpacity>
+      <KeyboardAvoidingView behavior="height" style={styles.screen}>
+      <View style={styles.background}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Email"
+            style={styles.txt2}
+            placeholderTextColor="black"
+            onChangeText={val => setEmail(val)}
+          />
+          <TextInput
+            placeholder="Password"
+            placeholderTextColor="black"
+            style={styles.txt2}
+            onChangeText={val => setPassword(val)}
+          />
+        </View>
+        <TouchableOpacity title="LogIn" onPress={login} style={styles.button}>
+          <Text style={styles.txt}> Login </Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity
+          title="ForgotPassword"
+          onPress={() => {
+            navigation.navigate('ForgotPassword');
+          }}
+          style={styles.button}>
+          <Text style={styles.txt}> Forgot Password </Text>
+        </TouchableOpacity>
 
-      <Button onPress={()=>{
-        navigation.navigate('Teacher');
-      }} title="Teacher" /> 
-    </KeyboardAvoidingView>
+        <Button onPress={()=>{
+          navigation.navigate('SignUp');
+        }} title="SignUp" />
+        <Parent/>
+        </View> 
+      </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   inputContainer: {
     width: 300,
+  },
+  screen:{
+    flex: 1,
   },
   background: {
     alignItems: 'center',
