@@ -4,14 +4,12 @@ import com.myussuf.myussufprojectspring.Entities.Student;
 import com.myussuf.myussufprojectspring.Repository.ParentRepo;
 import com.myussuf.myussufprojectspring.Repository.StudentRepo;
 import com.myussuf.myussufprojectspring.exceptions.AuthException;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional

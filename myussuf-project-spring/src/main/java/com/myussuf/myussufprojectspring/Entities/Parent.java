@@ -1,5 +1,6 @@
 package com.myussuf.myussufprojectspring.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -29,7 +30,7 @@ public class Parent {
     private String password;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "parent-child")
+    @JsonBackReference(value = "parent-child")
     private List<Student> children;
 
     public Parent(String firstname, String lastname, String email, String password) {

@@ -33,6 +33,7 @@ public class StudentController {
     public void deleteStudent(@PathVariable int studentid){
         studentServ.deleteStudent(studentid);
     }
+
     @GetMapping("/students")
     public List<Student> getAllStudents(){
       return  studentServ.getAllStudents();

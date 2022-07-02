@@ -2,6 +2,7 @@ package com.myussuf.myussufprojectspring.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Entity
 @Table(name = "student")
 @Validated
+@AllArgsConstructor
 public class Student {
 
     @Id
@@ -41,7 +43,7 @@ public class Student {
             inverseJoinColumns = @JoinColumn(name = "subjectid")
 
     )
-    @JsonManagedReference(value = "subject-student")
+    @JsonBackReference(value = "subject-student")
     private List<Subject> subjects;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
@@ -53,6 +55,7 @@ public class Student {
 
     public Student() {
     }
+
 
     public Student(String firstname, String lastname, Date dob, String school, List subjects) {
         this.firstname = firstname;
