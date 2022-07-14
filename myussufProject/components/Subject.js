@@ -12,24 +12,23 @@ import axios from 'axios';
 import {Avatar} from '@rneui/themed';
 import { ListItem } from '@rneui/base';
 import { useEffect } from 'react';
-import { fetchParents } from './util/http';
+import { fetchParents, fetchSubjects } from './util/http';
 import SelectDropdown from 'react-native-select-dropdown';
 import Dropdown from './Forms/Dropdown';
+import { CheckBox } from '@rneui/themed'
 
 
-const Parent = () => {
+
+const Subject = () => {
   const [state, setState] = useState([]);
-
-  const x = state;
 
 
   useEffect(()=>{
-    async function getParents(){
-     const parents = await fetchParents();
-      setState(parents)
+    async function getSubjects(){
+     const subjects = await fetchSubjects();
+      setState(subjects)
     }
-    getParents();
-    console.log(x);
+    getSubjects();
   }, [])
 
 
@@ -42,14 +41,20 @@ const Parent = () => {
     // </ListItem>
     // Invoking get method to perform a GET request
 
-    <View style={{paddingRight:5}}>
-    <Dropdown props = {state} label= "Parent"/>
+    <View>
+        {/* {state.map((value,index)=>{
+            return <CheckBox key={index} value={Object.values(value).subjectname} />
+        })} */}
 
+           {/* <Dropdown props = {state} label= "Subject"/> */}
+
+    {/* <Button title='GetState' onPress={fetchParents}/>
+          <Text style={styles.txt}>{state}</Text> */}
     </View>
   );
 };
 
-export default Parent;
+export default Subject;
 
 const styles = StyleSheet.create({
   txt:{

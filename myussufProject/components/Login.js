@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import type {Node} from 'react';
+import React, { useState } from 'react';
+import type { Node } from 'react';
 import {
   requireNativeComponent,
   KeyboardAvoidingView,
@@ -18,13 +18,13 @@ import ForgotPassword from './ForgotPassword.js';
 import Parent from './Parent.js';
 import SignUp from './Forms/SignUp.js';
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState(' ');
   const [password, setPassword] = useState(' ');
 
-  const login = () => {};
+  const login = () => { };
   return (
-      <KeyboardAvoidingView behavior="height" style={styles.screen}>
+    <KeyboardAvoidingView behavior="height" style={styles.screen}>
       <View style={styles.background}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -43,7 +43,7 @@ const Login = ({navigation}) => {
         <TouchableOpacity title="LogIn" onPress={login} style={styles.button}>
           <Text style={styles.txt}> Login </Text>
         </TouchableOpacity>
-        
+
         <TouchableOpacity
           title="ForgotPassword"
           onPress={() => {
@@ -53,12 +53,11 @@ const Login = ({navigation}) => {
           <Text style={styles.txt}> Forgot Password </Text>
         </TouchableOpacity>
 
-        <Button onPress={()=>{
+        <Button onPress={() => {
           navigation.navigate('SignUp');
         }} title="SignUp" />
-        <Parent/>
-        </View> 
-      </KeyboardAvoidingView>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     width: 300,
   },
-  screen:{
+  screen: {
     flex: 1,
   },
   background: {
@@ -83,14 +82,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: 220,
   },
-  button2:{
+  button2: {
 
   },
 
   txt: {
     textAlign: 'center',
     fontSize: 15,
-    color:"white",
+    color: "white",
   },
   txt2: {
     textAlign: 'center',
