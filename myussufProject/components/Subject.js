@@ -15,22 +15,23 @@ import { useEffect } from 'react';
 import { fetchParents, fetchSubjects } from './util/http';
 import SelectDropdown from 'react-native-select-dropdown';
 import Dropdown from './Forms/Dropdown';
-import { CheckBox } from '@rneui/themed'
+import  CheckBox  from '@react-native-community/checkbox'
 
 
+const Subject = ({setSub}) => {
+  const [state, setState] = useState({Maths:false, English:false, Science:false});
 
-const Subject = () => {
-  const [state, setState] = useState([]);
 
+  // useEffect(()=>{
+  //   async function getSubjects(){
+  //    const subjects = await fetchSubjects();
+  //     setState(subjects)
+  //   }
+           
+  //   getSubjects();
+  // }, [])
 
-  useEffect(()=>{
-    async function getSubjects(){
-     const subjects = await fetchSubjects();
-      setState(subjects)
-    }
-    getSubjects();
-  }, [])
-
+ 
 
   return (
     // <ListItem>
@@ -41,15 +42,14 @@ const Subject = () => {
     // </ListItem>
     // Invoking get method to perform a GET request
 
-    <View>
-        {/* {state.map((value,index)=>{
-            return <CheckBox key={index} value={Object.values(value).subjectname} />
-        })} */}
+    <View >
 
-           {/* <Dropdown props = {state} label= "Subject"/> */}
+       
+        <CheckBox value={state.Maths} onValueChange={(value) => { setSub({...state, Maths:value}), setState({...state, Maths:value}), console.log(state); } }/><Text style={{}}>Maths</Text>
+        {/* <CheckBox value={state.English} onValueChange={(value) => { setSub({...state, English:value}), setState({...state, English:value}), console.log(state); } }/><Text>English</Text>
+        <CheckBox value={state.Science} onValueChange={(value) => { setSub({...state, Science:value}), setState({...state, Science:value}), console.log(state); } }/><Text>Science</Text> */}
 
-    {/* <Button title='GetState' onPress={fetchParents}/>
-          <Text style={styles.txt}>{state}</Text> */}
+
     </View>
   );
 };
@@ -60,6 +60,5 @@ const styles = StyleSheet.create({
   txt:{
     color:'black'
   },
-
   
 });

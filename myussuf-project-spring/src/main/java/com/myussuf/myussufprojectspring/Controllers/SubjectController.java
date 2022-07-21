@@ -6,6 +6,8 @@ import com.myussuf.myussufprojectspring.Services.SubjectServ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/subject")
 public class SubjectController {
@@ -17,6 +19,9 @@ public class SubjectController {
         this.subjectServ = subjectServ;
         this.studentServ = studentServ;
     }
+
+    @GetMapping("/subjects")
+    public List<Subject> getAllSubjects(){return subjectServ.getAllSubjects();};
 
     @GetMapping("/{id}")
     public Subject getSubject(@PathVariable int id){

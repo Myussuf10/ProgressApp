@@ -25,15 +25,13 @@ export async function fetchParents(){
 
 export async function fetchSubjects(){
     const response = await axios.get(BACKEND_URL + "/subject/subjects");
-
+    
     const subjects = []
     for (const x in response.data){
-        const subjectO = {
-            id: response.data[x].id,
-            subjectname: response.data[x].subjectname,
-                  
-        };
-        subjects.push(subjectO);
+        const subjectname = response.data[x].subjectname;
+        const subject = {};
+        subject[subjectname] = false
+        subjects.push(subject);
     }
 
     console.log(subjects)
