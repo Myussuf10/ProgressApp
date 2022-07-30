@@ -17,10 +17,9 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Dropdown from './Forms/Dropdown';
 
 
-const Parent = () => {
-  const [state, setState] = useState([]);
-
-  const x = state;
+const Parent = ({setParent}) => {
+  const [state, setState] = useState({});
+  const parents = []
 
 
   useEffect(()=>{
@@ -29,10 +28,13 @@ const Parent = () => {
       setState(parents)
     }
     getParents();
-    console.log(x);
+
   }, [])
-
-
+  for(var i in state){
+    parents.push(state[i].name)
+  }
+  
+  
   return (
     // <ListItem>
     // <Avatar rounded 
@@ -42,8 +44,8 @@ const Parent = () => {
     // </ListItem>
     // Invoking get method to perform a GET request
 
-    <View style={{paddingRight:5}}>
-    <Dropdown props = {state} label= "Parent"/>
+    <View style={styles.inputContainer}>
+    <SelectDropdown style={styles.box} data={parents} defaultButtonText={"Select Parent"} onSelect={(x,i)=>{setParent(state.find((i)=>i.name===x).id),console.log()}} search={true}/>
 
     </View>
   );
@@ -52,6 +54,14 @@ const Parent = () => {
 export default Parent;
 
 const styles = StyleSheet.create({
+  inputContainer: {
+    marginHorizontal: 4,
+  
+},
+  box:{
+    padding: 60
+    
+  },
   txt:{
     color:'black'
   },

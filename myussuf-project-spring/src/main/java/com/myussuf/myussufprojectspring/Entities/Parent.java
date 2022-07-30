@@ -2,6 +2,8 @@ package com.myussuf.myussufprojectspring.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -9,14 +11,14 @@ import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.SEQUENCE;
+import static javax.persistence.GenerationType.*;
 
 @Entity
+@AllArgsConstructor
 public class Parent {
 
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "student_pkey")
-    @SequenceGenerator(name="student_pkey", sequenceName = "student_pkey", allocationSize = 1)
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "parentid", updatable = false, nullable = false)
     private int id;
 
@@ -33,6 +35,7 @@ public class Parent {
     @JsonBackReference(value = "parent-child")
     private List<Student> children;
 
+    @Autowired
     public Parent(String firstname, String lastname, String email, String password) {
         this.firstname = firstname;
         this.lastname = lastname;

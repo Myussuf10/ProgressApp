@@ -11,13 +11,13 @@ export async function fetchParents(){
 
     const parents = []
     for (const x in response.data){
-        const parentObj = {
+        const parentsO = {
             id: response.data[x].id,
-            firstname: response.data[x].firstname,
-            lastname: response.data[x].lastname,
+            name: response.data[x].firstname + " " + response.data[x].lastname
                    
         };
-        parents.push(parentObj);
+        //const parentsO = [response.data[x].id + " - " + response.data[x].firstname + " " + response.data[x].lastname];
+        parents.push(parentsO);
     }
 
     return parents;
@@ -36,4 +36,9 @@ export async function fetchSubjects(){
 
     console.log(subjects)
     return subjects;
+}
+
+export function storeParents(parentsInfo){
+    axios.post(BACKEND_URL + 'parent/parent', parentsInfo);
+
 }

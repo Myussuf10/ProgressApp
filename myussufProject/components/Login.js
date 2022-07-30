@@ -14,6 +14,7 @@ import {
   View,
   Button,
 } from 'react-native';
+import Admin from './Admin.js';
 import ForgotPassword from './ForgotPassword.js';
 import Parent from './Parent.js';
 import SignUp from './Forms/SignUp.js';
@@ -45,9 +46,9 @@ const Login = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          title="ForgotPassword"
+          title="Admin"
           onPress={() => {
-            navigation.navigate('ForgotPassword');
+            navigation.navigate('Admin');
           }}
           style={styles.button}>
           <Text style={styles.txt}> Forgot Password </Text>

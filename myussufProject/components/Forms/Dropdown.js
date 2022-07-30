@@ -13,7 +13,7 @@ const Dropdown = ({props,label}) =>{
     
   return (
     <View style={styles.background}>
-     <SelectDropdown defaultButtonText= {"Select " + label} data={x} search={true} />
+     <SelectDropdown  defaultButtonText= {"Select " + label} data={x} search={true} />
     </View>
   )
 }

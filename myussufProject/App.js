@@ -18,6 +18,8 @@ import Login from './components/Login.js';
 import ForgotPassword from './components/ForgotPassword.js';
 import Parent from './components/Parent.js';
 import SignUp from './components/Forms/SignUp.js';
+import AddParent from './components/AddParent.js';
+import Admin from './components/Admin.js';
 
 const Stack = createStackNavigator();
 
@@ -36,7 +38,9 @@ const App = () => {
       <Stack.Navigator screenOptions={globalScreenOptions} initialRouteName="Login">
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Parent" component={Parent} />
+        <Stack.Screen name="Admin" component={Admin}/>
         <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="AddParent" component={AddParent}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       </Stack.Navigator>
     </NavigationContainer>

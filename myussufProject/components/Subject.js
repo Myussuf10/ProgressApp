@@ -9,8 +9,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import axios from 'axios';
-import {Avatar} from '@rneui/themed';
-import { ListItem } from '@rneui/base';
+
 import { useEffect } from 'react';
 import { fetchParents, fetchSubjects } from './util/http';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -18,18 +17,23 @@ import Dropdown from './Forms/Dropdown';
 import  CheckBox  from '@react-native-community/checkbox'
 
 
-const Subject = ({setSub}) => {
-  const [state, setState] = useState({Maths:false, English:false, Science:false});
+const Subject = ({setSub, label}) => {
+  const [state, setState] = useState({Maths:false, Science:false, English:false});
+  const [Maths, setMaths] = useState(false)
+  const [English, setEnglish] = useState(false)
+  const [Science, setScience] = useState(false)
 
 
-  // useEffect(()=>{
-  //   async function getSubjects(){
-  //    const subjects = await fetchSubjects();
-  //     setState(subjects)
-  //   }
-           
-  //   getSubjects();
-  // }, [])
+  const inputHandler=(newValue, target)=>{
+    setState((currentInput)=>{
+      return{
+        ...currentInput,
+        [target]:newValue
+      };
+      
+    })
+    setSub(...state);
+  }
 
  
 
@@ -42,12 +46,18 @@ const Subject = ({setSub}) => {
     // </ListItem>
     // Invoking get method to perform a GET request
 
-    <View >
+    <View style={{alignContent:"center"}}>
+
+    
 
        
-        <CheckBox value={state.Maths} onValueChange={(value) => { setSub({...state, Maths:value}), setState({...state, Maths:value}), console.log(state); } }/><Text style={{}}>Maths</Text>
-        {/* <CheckBox value={state.English} onValueChange={(value) => { setSub({...state, English:value}), setState({...state, English:value}), console.log(state); } }/><Text>English</Text>
-        <CheckBox value={state.Science} onValueChange={(value) => { setSub({...state, Science:value}), setState({...state, Science:value}), console.log(state); } }/><Text>Science</Text> */}
+        {/* <CheckBox style={styles.box} value={state.label} onValueChange={(value) => {setState({...state, [label]:value}, setSub({...state}), ), console.log(state); } }/><Text style={styles.box}>{label}</Text> */}
+        <CheckBox style={styles.box} 
+        value={state} 
+        onValueChange={null} />
+        <Text style={styles.box}>{label}</Text>
+
+        
 
 
     </View>
@@ -57,6 +67,9 @@ const Subject = ({setSub}) => {
 export default Subject;
 
 const styles = StyleSheet.create({
+  box:{
+    marginLeft:60
+  },
   txt:{
     color:'black'
   },

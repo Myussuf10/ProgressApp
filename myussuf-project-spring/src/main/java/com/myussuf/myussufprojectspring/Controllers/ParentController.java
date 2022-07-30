@@ -1,6 +1,7 @@
 package com.myussuf.myussufprojectspring.Controllers;
 
 import com.myussuf.myussufprojectspring.Entities.Parent;
+import com.myussuf.myussufprojectspring.Services.EmailSenderServ;
 import com.myussuf.myussufprojectspring.Services.ParentServ;
 import lombok.AllArgsConstructor;
 import org.springframework.data.web.JsonPath;
@@ -25,5 +26,9 @@ public class ParentController {
         List<Parent> parent = new ArrayList<>();
 
         return parentServ.getParents();
+    }
+    @PostMapping("/parent")
+    public void signUpParent(@RequestBody Parent parent){
+        parentServ.saveParent(parent);
     }
 }
