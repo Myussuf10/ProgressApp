@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import type { Node } from 'react';
 import {
   requireNativeComponent,
   KeyboardAvoidingView,
@@ -14,10 +13,9 @@ import {
   View,
   Button,
 } from 'react-native';
-import Admin from './Admin.js';
 import ForgotPassword from './ForgotPassword.js';
 import Parent from './Parent.js';
-import SignUp from './Forms/SignUp.js';
+import Admin from './Admin.js';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState(' ');
@@ -48,16 +46,14 @@ const Login = ({ navigation }) => {
         <TouchableOpacity
           title="Admin"
           onPress={() => {
-            navigation.navigate('Admin');
+            navigation.navigate(Admin);
           }}
           style={styles.button}>
           <Text style={styles.txt}> Forgot Password </Text>
         </TouchableOpacity>
 
-        <Button onPress={() => {
-          navigation.navigate('SignUp');
-        }} title="SignUp" />
-      </View>
+       
+      </View> 
     </KeyboardAvoidingView>
   );
 };

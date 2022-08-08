@@ -2,12 +2,8 @@ import axios from "axios";
 
 const BACKEND_URL = "http://10.0.2.2:8080/";
 
-export function newStudent(){
-axios.post(BACKEND_URL )
-}
-
 export async function fetchParents(){
-    const response = await axios.get(BACKEND_URL + "/parent/parents");
+    const response = await axios.get(BACKEND_URL + "/api/parents");
 
     const parents = []
     for (const x in response.data){
@@ -26,19 +22,43 @@ export async function fetchParents(){
 export async function fetchSubjects(){
     const response = await axios.get(BACKEND_URL + "/subject/subjects");
     
-    const subjects = []
+    const subjects = {}
     for (const x in response.data){
-        const subjectname = response.data[x].subjectname;
-        const subject = {};
-        subject[subjectname] = false
-        subjects.push(subject);
+        const subjectid = response.data[x].id;
+        const subjectname = response.data[x].subjectname
+         subjects[subjectid] = subjectname;
     }
 
-    console.log(subjects)
     return subjects;
 }
 
+export function signUpTeacher(teacherInfo){
+    axios.post(BACKEND_URL + 'teacher/teacher', teacherInfo);
+}
+
 export function storeParents(parentsInfo){
-    axios.post(BACKEND_URL + 'parent/parent', parentsInfo);
+    axios.post(BACKEND_URL + 'api/parent', parentsInfo);
+}
+
+export async function getClasInfo(sid){
+    const response = await axios.get(BACKEND_URL + `class/subject/${sid}`);
+    console.log(response.data)
+    for(const x in response.data)
+    {console.log(response.data[x].subject)}
+}
+export async function storeStudent(parentid, info){
+    const resp = await axios.post(BACKEND_URL + `student/student/${parentid}`, info)
+    const studid = resp.data;
+    return studid
+}
+export function setClass(subjectid, info){
+    axios.post(BACKEND_URL + `class/class/${subjectid}`, info)
+}
+
+export function assigSub(subjectid, studentid){
+    axios.put(BACKEND_URL + `student/student/${subjectid}/${studentid}`)
 
 }
+
+
+

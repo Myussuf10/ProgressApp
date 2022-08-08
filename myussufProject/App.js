@@ -20,6 +20,9 @@ import Parent from './components/Parent.js';
 import SignUp from './components/Forms/SignUp.js';
 import AddParent from './components/AddParent.js';
 import Admin from './components/Admin.js';
+import AddTeacher from './components/AddTeacher.js';
+import TeacherHome from './components/TeacherHome.js';
+import SetUpClasses from './components/SetUpClasses.js';
 
 const Stack = createStackNavigator();
 
@@ -41,7 +44,10 @@ const App = () => {
         <Stack.Screen name="Admin" component={Admin}/>
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="AddParent" component={AddParent}/>
+        <Stack.Screen name="AddTeacher" component={AddTeacher}/>
+        <Stack.Screen name="TeacherHome" component={TeacherHome}/>
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+        <Stack.Screen name= "SetUpClasses" options={{title: "Classes"}} component={SetUpClasses}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

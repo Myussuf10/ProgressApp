@@ -1,25 +1,29 @@
 package com.myussuf.myussufprojectspring.Controllers;
 
 import com.myussuf.myussufprojectspring.Entities.Teacher;
-import com.myussuf.myussufprojectspring.Services.TeacherServ;
+import com.myussuf.myussufprojectspring.Services.TeacherServImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/teacher")
 public class TeacherController {
-    private TeacherServ teacherServ;
+    private TeacherServImpl teacherServImpl;
 
     @Autowired
-    public TeacherController(TeacherServ teacherServ) {
-        this.teacherServ = teacherServ;
+    public TeacherController(TeacherServImpl teacherServImpl) {
+        this.teacherServImpl = teacherServImpl;
     }
 
     @GetMapping("/{id}")
     public Teacher getTeacher(@PathVariable int id){
-        return teacherServ.getTeacher(id);
+        return teacherServImpl.getTeacher(id);
+    }
+
+    @PostMapping("/teacher")
+    public void signUpTeacher(@RequestBody Teacher teacher){
+
+        System.out.println(teacher);
+        teacherServImpl.saveTeacher(teacher);
     }
 }

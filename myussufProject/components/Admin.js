@@ -2,11 +2,19 @@ import { View, Text, KeyboardAvoidingView, StyleSheet, TouchableOpacity } from '
 import React from 'react'
 import {Avatar} from '@rneui/themed';
 import { ListItem } from '@rneui/base';
+import AddTeacher from './AddTeacher';
+import { Header } from '@react-navigation/stack';
+import SignUp from './Forms/SignUp';
+import SetUpClasses from './SetUpClasses';
 
 const Admin = ({navigation}) => {
   return (
-    <KeyboardAvoidingView style={{screen:{flex:1}}}>
-           <View style={styles.background}>
+    <KeyboardAvoidingView
+  keyboardVerticalOffset = {Header.HEIGHT} // adjust the value here if you need more padding
+  style = {{ flex: 1, backgroundColor: '#B4B4B4' }}
+  behavior = "padding" >
+    {/* </KeyboardAvoidingView><KeyboardAvoidingView style={{screen:{flex:1}, backgroundColor:'#B4B4B4', }}> */}
+           <View style={styles.background} >
      <Avatar rounded 
      source={{
          uri: 
@@ -14,29 +22,22 @@ const Admin = ({navigation}) => {
       <Text>Admin</Text>
       </View>
       <View style={styles.row}>
-      <TouchableOpacity title="LogIn" onPress={null} style={styles.button}>
-          <Text style={styles.txt}> Students </Text>
+      <TouchableOpacity title="SignUp" onPress={()=>{navigation.navigate(SignUp)}} style={styles.button}>
+          <Text style={styles.txt}> Add Students </Text>
       </TouchableOpacity>
-      <TouchableOpacity title="LogIn" onPress={null} style={styles.button}>
-          <Text style={styles.txt}> Teachers </Text>
-      </TouchableOpacity>
-      </View>
-      <View style={styles.row}>
-      <TouchableOpacity title="LogIn" onPress={null} style={styles.button}>
-          <Text style={styles.txt}> Subjects </Text>
-      </TouchableOpacity>
-      <TouchableOpacity title="LogIn" onPress={null} style={styles.button}>
-          <Text style={styles.txt}> Classes </Text>
+      <TouchableOpacity title="AddTeacher" onPress={()=>{navigation.navigate('AddTeacher')}} style={styles.button}>
+          <Text style={styles.txt}> Add Teachers </Text>
       </TouchableOpacity>
       </View>
       <View style={styles.row}>
-      <TouchableOpacity title="LogIn" onPress={null} style={styles.button}>
-          <Text style={styles.txt}> Login </Text>
+      <TouchableOpacity title="Classes" onPress={()=>{navigation.navigate(SetUpClasses)}} style={styles.button}>
+          <Text style={styles.txt}> Add Classes </Text>
       </TouchableOpacity>
-      <TouchableOpacity title="LogIn" onPress={null} style={styles.button}>
-          <Text style={styles.txt}> Login </Text>
+      <TouchableOpacity title="LogIn" onPress={()=>{navigation.navigate('TeacherHome')}} style={styles.button}>
+          <Text style={styles.txt}> Edit </Text>
       </TouchableOpacity>
       </View>
+      
     </KeyboardAvoidingView>
   )
 }
@@ -45,18 +46,17 @@ export default Admin
 
 const styles = StyleSheet.create({
     row:{
-        marginLeft:30,
-        flexDirection: 'row'
+      alignItems: 'center',
+      justifyContent: 'center',  
+      flexDirection: 'row',
+      marginTop: 100
+      
     },
-   
+    
     background: {
       alignItems: 'center',
-      flex: 1,
-      justifyContent: 'center',
-      backgroundColor: '#B4B4B4',
-      padding: 25,
-      marginBottom: 130
-
+      justifyContent: 'center',  
+    
     },
     txt: {
         textAlign: 'center',

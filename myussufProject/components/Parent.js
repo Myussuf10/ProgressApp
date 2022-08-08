@@ -45,7 +45,7 @@ const Parent = ({setParent}) => {
     // Invoking get method to perform a GET request
 
     <View style={styles.inputContainer}>
-    <SelectDropdown style={styles.box} data={parents} defaultButtonText={"Select Parent"} onSelect={(x,i)=>{setParent(state.find((i)=>i.name===x).id),console.log()}} search={true}/>
+    <SelectDropdown style={styles.box} data={parents} defaultButtonText={"Select Parent"} onSelect={(x)=>{setParent(state.find((i)=>i.name===x).id)}} search={true}/>
 
     </View>
   );

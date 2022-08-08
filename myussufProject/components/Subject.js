@@ -17,13 +17,21 @@ import Dropdown from './Forms/Dropdown';
 import  CheckBox  from '@react-native-community/checkbox'
 
 
-const Subject = ({setSub, label}) => {
+const Subject = ({setMaths, label}) => {
   const [state, setState] = useState({Maths:false, Science:false, English:false});
-  const [Maths, setMaths] = useState(false)
+  const [subjects, setSubjects] = useState()
   const [English, setEnglish] = useState(false)
   const [Science, setScience] = useState(false)
 
 
+  useEffect(()=>{
+    async function getSubjects(){
+      const subjects = await fetchSubjects();
+       setSubjects(subjects)
+     }
+     getSubjects();
+     console.log(subjects)
+  })
   const inputHandler=(newValue, target)=>{
     setState((currentInput)=>{
       return{
@@ -51,12 +59,15 @@ const Subject = ({setSub, label}) => {
     
 
        
-        {/* <CheckBox style={styles.box} value={state.label} onValueChange={(value) => {setState({...state, [label]:value}, setSub({...state}), ), console.log(state); } }/><Text style={styles.box}>{label}</Text> */}
-        <CheckBox style={styles.box} 
-        value={state} 
-        onValueChange={null} />
-        <Text style={styles.box}>{label}</Text>
+        {/* <CheckBox style={styles.box} value={state.label} 
+        onValueChange={(value) => 
+        {console.log(value),setState({...state, [label]:value}, setSub({...state}), ), console.log(state); } }/>
+        <Text style={styles.box}>{label}</Text> */}
 
+        {/* <CheckBox style={styles.box} value={Maths} 
+        onValueChange={(value) => 
+        {setMath( value),console.log(Maths); } }/>
+        <Text style={styles.box}>Maths</Text> */}
         
 
 

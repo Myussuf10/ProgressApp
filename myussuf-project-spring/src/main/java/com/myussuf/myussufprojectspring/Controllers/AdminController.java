@@ -1,9 +1,8 @@
 package com.myussuf.myussufprojectspring.Controllers;
 
 import com.myussuf.myussufprojectspring.Entities.Admin;
-import com.myussuf.myussufprojectspring.Entities.Student;
-import com.myussuf.myussufprojectspring.Services.AdminServ;
-import com.myussuf.myussufprojectspring.Services.StudentServ;
+import com.myussuf.myussufprojectspring.Services.AdminServImpl;
+import com.myussuf.myussufprojectspring.Services.StudentServImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,19 +11,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/management")
 public class AdminController {
-    private final AdminServ adminServ;
-    public final StudentServ studentServ;
+    private final AdminServImpl adminServImpl;
+    public final StudentServImpl studentServImpl;
 
     @Autowired
-    public AdminController(AdminServ adminServ, StudentServ studentServ){
-        this.adminServ = adminServ;
-        this.studentServ = studentServ;
+    public AdminController(AdminServImpl adminServImpl, StudentServImpl studentServImpl){
+        this.adminServImpl = adminServImpl;
+        this.studentServImpl = studentServImpl;
     }
 
     @GetMapping("/admin")
     public List<Admin> getAdmin(){
 
-        return adminServ.getAdmins();
+        return adminServImpl.getAdmins();
     }
 
 //    public Admin getOne(Integer id){

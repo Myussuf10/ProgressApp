@@ -2,8 +2,9 @@ import { View, Text, StyleSheet, KeyboardAvoidingView, TouchableOpacity } from '
 import React, { useEffect, useState } from 'react'
 import Input from './Forms/Input'
 import { storeParents } from './util/http';
+import SignUp from './Forms/SignUp';
 
-const AddParent =() => {
+const AddParent =({navigation}) => {
   const [inputValues, setInputValues] = useState({
     firstname: '',
     lastname: '',
@@ -21,14 +22,14 @@ const AddParent =() => {
   }
 
   const Assign =()=>{
-    const y = Math.random().toString(35).substring(0,10);
+    const y = Math.random().toString(36).substring(2,7);
     setInputValues((x)=>{
       return{
       ...x,
        password:y,
     }});
-    //storeParents(inputValues);
-    console.log(inputValues);
+    storeParents(inputValues);
+    navigation.pop();
   }
 
 

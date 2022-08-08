@@ -26,6 +26,10 @@ public class Subject {
     @JsonBackReference(value = "teacher-subject")
     private Teacher teacher;
 
+    @OneToMany(mappedBy = "subject")
+    @JsonBackReference(value = "subject-class")
+    private List<Class> aClass;
+
     @ManyToMany
     @JoinTable(
 //            schema = "students",

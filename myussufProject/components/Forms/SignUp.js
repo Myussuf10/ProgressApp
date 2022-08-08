@@ -2,9 +2,11 @@ import { StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView} from 'r
 import React from 'react'
 import Input from './Input'
 import Parent from '../Parent'
-import { Button } from '@rneui/themed/dist/Button'
 import { useState } from 'react'
-import Subject from '../Subject'
+import  CheckBox  from '@react-native-community/checkbox'
+import { storeStudent, fetchSubjects, assigSub } from '../util/http'
+import { useEffect } from 'react'
+import { getKeyByValue } from '../util/helperFunctions'
 
 
 const SignUp = ({navigation}) => {
@@ -13,15 +15,24 @@ const SignUp = ({navigation}) => {
     lastname: '',
     school: '',
     dob:'',
-    parent:'',
   });
-  const [parent, setParent] = useState("")
+  const[Parents, setParent] = useState();
+  const [Maths, setMaths] = useState(false); 
+  const [English, setEnglish] = useState(false); 
+  const [Science, setScience] = useState(false); 
+  const [AvailSubjects, setSubjects] = useState({})
+  const [studentSubject, setStudentSubjects] = useState([])
 
-  const [subjects, setSub] = useState({
-    Maths: false,
-    Science: false,
-    English: false
-  });
+  
+  useEffect(()=>{
+    async function getSubjects(){
+     const allSubjects = await fetchSubjects();
+      setSubjects(allSubjects)
+    }
+    getSubjects();
+
+  }, [])
+ 
 
   const inputHandler=(inputId, enteredValue)=>{
     setStudent((currentInput)=>{
@@ -32,8 +43,14 @@ const SignUp = ({navigation}) => {
     });
   }
 
-  function Assign() {
-    console.log(subjects);
+
+   async function Assign() {
+      student.dob= new Date(student.dob);
+      const sudid = await storeStudent(Parents, student);
+          
+    if(Maths){
+      setStudentSubjects((x)=>[...x, parseInt(getKeyByValue(AvailSubjects, "Maths")) ])    }
+    console.log(sudid);
   }
  
   
@@ -52,7 +69,7 @@ const SignUp = ({navigation}) => {
 
       <Input label="DOB  " textInputConfig={{
         keyboardType: 'number-pad',
-        placeholder: 'DD/MM/YY',
+        placeholder: 'YY-MM-DD',
         onChangeText: inputHandler.bind(this,'dob'),
         value: student.dob }} />
       <Input label="School  " textInputConfig={{
@@ -60,7 +77,7 @@ const SignUp = ({navigation}) => {
         onChangeText: inputHandler.bind(this,'school'),
         value: student.school }} />
       <View style={styles.dropdown}>
-        <Parent setParent={inputHandler.bind(this,'parent')} />
+        <Parent setParent={setParent} />
         <TouchableOpacity
         title="AddParent"
         onPress={() => {navigation.navigate('AddParent')
@@ -81,9 +98,15 @@ const SignUp = ({navigation}) => {
       <View style={styles.checkboxWrapper}>  
       
                 
-      {/* <Subject label="Maths" setSub={inputHandler.bind(this,true)}/>
-      <Subject label= "Science" setSub={setSub}/>
-      <Subject label= "English" setSub={setSub}/> */}
+      <CheckBox style={{marginLeft: 40}} value={Maths} onValueChange={(value)=>setMaths(value)}/>
+      <Text style={styles.box}>Maths</Text>
+
+      <CheckBox  style={{marginLeft: 40}} value={Science} onValueChange={(value)=>setScience(value)}/>
+      <Text style={styles.box}>Science</Text>
+
+      <CheckBox style={{marginLeft: 40}} value={English} onValueChange={(value)=>setEnglish(value)}/>
+      <Text style={styles.box}>English</Text>
+
 
       </View>
       <TouchableOpacity
@@ -125,6 +148,7 @@ const styles = StyleSheet.create({
     },
     checkboxWrapper: {
       alignItems: 'center',
+      alignContent: 'center',
       flexDirection: 'row',
       paddingVertical: 5,
       flexWrap: 'wrap',
