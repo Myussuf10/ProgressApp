@@ -4,33 +4,38 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { Text, View } from 'react-native'
 import { Agenda, Calendar, CalendarList } from 'react-native-calendars'
+import { Row, Table } from 'react-native-table-component'
 import { getClasInfo } from './util/http'
 
 const TeacherHome = ({navigation}) => {
-    const [state, setState] = useState("");
+    const [state, setState] = useState([]);
 
     const x =()=>{
-        console.log(state);
 
+      console.log(state);
     }
 
     useEffect(()=>{
-        async function s(name){
-         const c = await getClasInfo(name);
-          setState(c)
-        }
-        s(1);
+      async function getClas(x){
+       const classess = await getClasInfo(x);
+        setState(classess)
+      }
+      getClas(2);
+  
+    }, [])
+    const p = state.map((x)=>{
+      <Table>
+        <Row>${x}</Row>
+      </Table>
+    })
     
-      }, [])
-    
+    console.log(p)
   return (
     <View>
-        <Button onPress={x()}/>
-
-    {/* <CalendarList markedDates={ {'2022-08-16': {selected: true, marked: true, selectedColor: 'blue'}}}/> */}
-   
-    {/* <Calendar markedDates={ {'2022-08-16': {selected: true, marked: true, selectedColor: 'blue'}}}/> */}
+        <Button onPress={()=>{x(2)}}/>
+      {p}
     </View>
+
 
   )
 }

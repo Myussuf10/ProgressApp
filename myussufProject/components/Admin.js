@@ -6,6 +6,7 @@ import AddTeacher from './AddTeacher';
 import { Header } from '@react-navigation/stack';
 import SignUp from './Forms/SignUp';
 import SetUpClasses from './SetUpClasses';
+import NewSubject from './NewSubject';
 
 const Admin = ({navigation}) => {
   return (
@@ -33,8 +34,8 @@ const Admin = ({navigation}) => {
       <TouchableOpacity title="Classes" onPress={()=>{navigation.navigate(SetUpClasses)}} style={styles.button}>
           <Text style={styles.txt}> Add Classes </Text>
       </TouchableOpacity>
-      <TouchableOpacity title="LogIn" onPress={()=>{navigation.navigate('TeacherHome')}} style={styles.button}>
-          <Text style={styles.txt}> Edit </Text>
+      <TouchableOpacity title="New Subject" onPress={()=>{navigation.navigate('NewSubject')}} style={styles.button}>
+          <Text style={styles.txt}> New Subject </Text>
       </TouchableOpacity>
       </View>
       

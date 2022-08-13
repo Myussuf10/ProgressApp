@@ -1,11 +1,13 @@
 package com.myussuf.myussufprojectspring.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -26,34 +28,27 @@ public class Subject {
     @JsonBackReference(value = "teacher-subject")
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "subject")
-    @JsonBackReference(value = "subject-class")
-    private List<Class> aClass;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subject")
+    private List<Comments> comments;
 
-    @ManyToMany
-    @JoinTable(
-//            schema = "students",
-            name = "subject_students",
-            joinColumns = @JoinColumn(name = "subjectid"),
-            inverseJoinColumns = @JoinColumn(name = "studentid")
-    )
-    @JsonBackReference(value = "subject-student")
-    private List<Student> students;
+    @OneToMany(mappedBy = "subject")
+    @JsonManagedReference(value = "subject-class")
+    private List<Class> aClass;
 
     public Subject(String subjectname) {
         this.subjectname = subjectname;
     }
 
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
+    }
+
     public Subject() {
 
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
     }
 
     public int getId() {
@@ -80,18 +75,24 @@ public class Subject {
         this.teacher = teacher;
     }
 
-    public void addStudents(Student student){
-        if(students == null){
-            students = new ArrayList<>();
-        }
-        students.add(student);
+    public List<Class> getaClass() {
+        return aClass;
+    }
+
+    public void setaClass(List<Class> aClass) {
+        this.aClass = aClass;
     }
 
     @Override
-    public String toString() {
-        return "Subject{" +
-                "id=" + id +
-                ", subjectname='" + subjectname + '\'' +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subject subject = (Subject) o;
+        return id == subject.id && Objects.equals(subjectname, subject.subjectname) && Objects.equals(teacher, subject.teacher) && Objects.equals(aClass, subject.aClass);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, subjectname, teacher, aClass);
     }
 }

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ParentRepo extends CrudRepository<Parent, Integer> {
 
+    Parent findByEmail(String email);
+
 }

@@ -45,12 +45,10 @@ const SignUp = ({navigation}) => {
 
 
    async function Assign() {
-      student.dob= new Date(student.dob);
-      const sudid = await storeStudent(Parents, student);
+      // student.dob= new Date(student.dob);
+      // const sudid = await storeStudent(Parents, student);
           
-    if(Maths){
-      setStudentSubjects((x)=>[...x, parseInt(getKeyByValue(AvailSubjects, "Maths")) ])    }
-    console.log(sudid);
+    
   }
  
   
@@ -69,7 +67,7 @@ const SignUp = ({navigation}) => {
 
       <Input label="DOB  " textInputConfig={{
         keyboardType: 'number-pad',
-        placeholder: 'YY-MM-DD',
+        placeholder: 'DD-MM-YYYY',
         onChangeText: inputHandler.bind(this,'dob'),
         value: student.dob }} />
       <Input label="School  " textInputConfig={{
@@ -93,22 +91,7 @@ const SignUp = ({navigation}) => {
         
        
       </View>
-      <Text style={styles.header}>Select Subjects</Text>
 
-      <View style={styles.checkboxWrapper}>  
-      
-                
-      <CheckBox style={{marginLeft: 40}} value={Maths} onValueChange={(value)=>setMaths(value)}/>
-      <Text style={styles.box}>Maths</Text>
-
-      <CheckBox  style={{marginLeft: 40}} value={Science} onValueChange={(value)=>setScience(value)}/>
-      <Text style={styles.box}>Science</Text>
-
-      <CheckBox style={{marginLeft: 40}} value={English} onValueChange={(value)=>setEnglish(value)}/>
-      <Text style={styles.box}>English</Text>
-
-
-      </View>
       <TouchableOpacity
         title="Submit"
         onPress={() => {Assign()

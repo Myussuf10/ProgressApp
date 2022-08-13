@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 
 const BACKEND_URL = "http://10.0.2.2:8080/";
 
@@ -42,9 +43,15 @@ export function storeParents(parentsInfo){
 
 export async function getClasInfo(sid){
     const response = await axios.get(BACKEND_URL + `class/subject/${sid}`);
-    console.log(response.data)
-    for(const x in response.data)
-    {console.log(response.data[x].subject)}
+    [{"dow": "2022-08-07", "id": 13, "time": "22:47"}]
+    const dates = [];
+    for(const i in response.data){
+        dates.push(response.data[i]["dow"]);
+    }
+    console.log(dates);
+   
+    return dates;
+    
 }
 export async function storeStudent(parentid, info){
     const resp = await axios.post(BACKEND_URL + `student/student/${parentid}`, info)
@@ -54,6 +61,7 @@ export async function storeStudent(parentid, info){
 export function setClass(subjectid, info){
     axios.post(BACKEND_URL + `class/class/${subjectid}`, info)
 }
+
 
 export function assigSub(subjectid, studentid){
     axios.put(BACKEND_URL + `student/student/${subjectid}/${studentid}`)

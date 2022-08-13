@@ -11,7 +11,6 @@ import javax.validation.constraints.Pattern;
 import java.util.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
-import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "student")
@@ -35,34 +34,40 @@ public class Student {
 
     private String school;
 
-    @ManyToMany
-    @JoinTable(
-//            schema = "students",
-            name = "subject_students",
-            joinColumns = @JoinColumn(name = "studentid"),
-            inverseJoinColumns = @JoinColumn(name = "subjectid")
-
-    )
-    @JsonBackReference(value = "subject-student")
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Subject> subjects;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
+    private List<Comments> comments;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,
     CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "parentid")
-    @JsonBackReference(value = "parent-child")
+    @JsonBackReference(value = "a")
     private Parent parent;
-
 
     public Student() {
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return id == student.id && Objects.equals(firstname, student.firstname) && Objects.equals(lastname, student.lastname) && Objects.equals(dob, student.dob) && Objects.equals(school, student.school) && Objects.equals(subjects, student.subjects) && Objects.equals(parent, student.parent);
+    }
 
-    public Student(String firstname, String lastname, Date dob, String school, List subjects) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.dob = dob;
-        this.school = school;
-        this.subjects = subjects;
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstname, lastname, dob, school, subjects, parent);
     }
 
     public int getId() {
@@ -109,8 +114,8 @@ public class Student {
         return subjects;
     }
 
-    public void setSubjects(List<Subject> subjectID) {
-        this.subjects = subjectID;
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
 
     public Parent getParent() {
@@ -119,23 +124,5 @@ public class Student {
 
     public void setParent(Parent parent) {
         this.parent = parent;
-    }
-
-    public void addSubject(Subject subject){
-        if(this.subjects == null){
-            subjects = new ArrayList<>();
-        }
-        subjects.add(subject);
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", dob=" + dob +
-                ", school='" + school + '\'' +
-                '}';
     }
 }

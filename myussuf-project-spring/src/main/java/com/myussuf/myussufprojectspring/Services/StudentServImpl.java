@@ -51,7 +51,8 @@ public class StudentServImpl {
     public void assignStudentToSub(int subid, int studentid){
         Subject subject = subjectServ.getSubject(subid);
         Student x = studentRepo.getById(studentid);
-        x.addSubject(subject);
+        x.getSubjects().add(subject);
+        studentRepo.save(x);
     }
 
     public void deleteStudent(int studentid){

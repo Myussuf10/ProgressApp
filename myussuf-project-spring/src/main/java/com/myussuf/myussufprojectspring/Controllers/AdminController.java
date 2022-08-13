@@ -3,22 +3,20 @@ package com.myussuf.myussufprojectspring.Controllers;
 import com.myussuf.myussufprojectspring.Entities.Admin;
 import com.myussuf.myussufprojectspring.Services.AdminServImpl;
 import com.myussuf.myussufprojectspring.Services.StudentServImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/management")
+@AllArgsConstructor
 public class AdminController {
     private final AdminServImpl adminServImpl;
     public final StudentServImpl studentServImpl;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public AdminController(AdminServImpl adminServImpl, StudentServImpl studentServImpl){
-        this.adminServImpl = adminServImpl;
-        this.studentServImpl = studentServImpl;
-    }
 
     @GetMapping("/admin")
     public List<Admin> getAdmin(){
@@ -32,7 +30,10 @@ public class AdminController {
 
     @PostMapping("/admin")
     public String addAdmin(@RequestBody Admin newAdmin){
-        //adminServ.registerStudent(newAdmin);
+        String encryptedPass = passwordEncoder.encode(newAdmin.getPassword());
+        newAdmin.setPassword(encryptedPass);
+        adminServImpl.saveAdmin(newAdmin);
+        
         return "Completed";
     }
 

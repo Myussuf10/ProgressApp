@@ -45,5 +45,6 @@ public class StudentController {
     @PutMapping("/student/{subjectid}/{studentid}")
     public void enrollStudent(@PathVariable int subjectid, @PathVariable int studentid){
         studentServImpl.assignStudentToSub(subjectid,studentid);
+
     }
 }

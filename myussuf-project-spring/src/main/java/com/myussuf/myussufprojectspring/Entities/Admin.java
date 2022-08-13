@@ -1,16 +1,22 @@
 package com.myussuf.myussufprojectspring.Entities;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+
+import java.util.Collection;
+import java.util.List;
 
 import static javax.persistence.GenerationType.*;
 
 @Entity
 @Table(name = "admin")
-public class Admin{
+public class Admin implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "admin_adminid_seq")
+    @GeneratedValue(strategy = IDENTITY, generator = "admin_adminid_seq")
     @SequenceGenerator(name="admin_adminid_seq", sequenceName = "admin_adminid_seq", allocationSize = 1)
     @Column(name = "adminid", updatable = false, nullable = false)
     private int id;
@@ -26,6 +32,11 @@ public class Admin{
 
     @Column(name = "password")
     private String password;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "AUTH_ADMIN_AUTHORITY", joinColumns = @JoinColumn(referencedColumnName = "adminid")
+    ,inverseJoinColumns = @JoinColumn(referencedColumnName = "id"))
+    private List<Authority> authorities;
 
 
     public Admin() {
@@ -74,8 +85,42 @@ public class Admin{
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {

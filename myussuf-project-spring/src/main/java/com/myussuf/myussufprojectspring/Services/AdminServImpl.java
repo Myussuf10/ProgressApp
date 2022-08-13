@@ -7,12 +7,14 @@ import com.myussuf.myussufprojectspring.Repository.StudentRepo;
 import com.myussuf.myussufprojectspring.exceptions.AuthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
+@Transactional
 public class AdminServImpl {
     private AdminRepo adminRepo;
     private StudentRepo studentRepo;
@@ -37,6 +39,10 @@ public class AdminServImpl {
 //            throw new AuthException("invalid email format");
 //        }
 //        adminRepo.save(newAdmin);
+    }
+
+    public void saveAdmin(Admin admin){
+        adminRepo.save(admin);
     }
 
     public List<Admin> getAdmins(){

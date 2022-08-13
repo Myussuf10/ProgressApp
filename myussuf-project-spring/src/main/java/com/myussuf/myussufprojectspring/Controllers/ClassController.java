@@ -31,8 +31,6 @@ public class ClassController {
     public void setupClass(
              @RequestBody Class clas,
              @PathVariable int subjectId) throws ParseException {
-        System.out.println(clas);
-        System.out.println(subjectId);
         classServ.setUpClass(clas, subjectId);
 
     }

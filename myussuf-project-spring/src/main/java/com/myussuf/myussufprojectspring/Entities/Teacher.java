@@ -1,16 +1,21 @@
 package com.myussuf.myussufprojectspring.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
-public class Teacher {
+@AllArgsConstructor
+public class Teacher implements UserDetails {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "teacher_pkey")
     @SequenceGenerator(name="teacher_pkey", sequenceName = "teacher_pkey", allocationSize = 1)
@@ -31,6 +36,9 @@ public class Teacher {
     @JsonManagedReference(value = "teacher-subject")
     private List<Subject> subjects;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher")
+    private List<Comments> comments;
+
     public List<Subject> getSubjects() {
         return subjects;
     }
@@ -38,6 +46,11 @@ public class Teacher {
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
     }
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "AUTH_TEACHER_AUTHORITY", joinColumns = @JoinColumn(referencedColumnName = "teacherid")
+            ,inverseJoinColumns = @JoinColumn(referencedColumnName = "id"))
+    private List<Authority> authorities;
 
     public Teacher(String firstname, String lastname, String email, String password) {
         this.firstname = firstname;
@@ -48,6 +61,10 @@ public class Teacher {
 
     public Teacher() {
 
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public int getId() {
@@ -82,8 +99,46 @@ public class Teacher {
         this.email = email;
     }
 
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {

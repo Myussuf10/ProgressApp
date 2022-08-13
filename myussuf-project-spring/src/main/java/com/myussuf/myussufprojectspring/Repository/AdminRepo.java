@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface AdminRepo extends CrudRepository<Admin, Integer> {
 
+    Admin findByEmail(String email);
+
 }

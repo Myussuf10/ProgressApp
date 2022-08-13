@@ -4,6 +4,7 @@ import com.myussuf.myussufprojectspring.Entities.Subject;
 import com.myussuf.myussufprojectspring.Services.StudentServImpl;
 import com.myussuf.myussufprojectspring.Services.SubjectServImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +29,8 @@ public class SubjectController {
         return subjectServImpl.getSubject(id);
     }
 
-//    @PostMapping("/{studentid}")
-//    public String setSubjectStudent(@PathVariable int id, int subjectid){
-//     studentServ.getStudent(id);
-//    }
+    @PutMapping("/{studentid}/{subjectid}")
+    public void setSubjectStudent(@PathVariable int studentid, @PathVariable int subjectid){
+     subjectServImpl.setSubjectToStudent(studentid,subjectid);
+    }
 }

@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { KeyboardAvoidingView } from 'react-native'
 import DatePicker from 'react-native-date-picker'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import SelectDropdown from 'react-native-select-dropdown'
 import Input from './Forms/Input'
 import { getKeyByValue } from './util/helperFunctions'
@@ -43,9 +43,18 @@ const SetUpClasses = ({navigation}) => {
     }
     const Confirm=()=>{
         const data = {}
-        data["dow"]=date.toISOString().split('T')[0].toString();
-        data["time"] = time.getHours().toString() + ":" + time.getMinutes().toString()
-        console.log(lengthOfCourse);
+        let i,c;
+        
+        for(i=0, c=0; i<lengthOfCourse; i++, c+=7){
+            let day = (date.getUTCDate()+c).toString()
+            if ((date.getUTCDate()+c).toString().length<2){
+                day = "0" + (date.getUTCDate()+c).toString()
+            }
+            data["dow"] = (date.getFullYear().toString())+ "-" + (date.getMonth()+1).toString() + "-" + day
+            data["time"] = time.getHours().toString() + ":" + time.getMinutes().toString()
+            setClass(chosenSub, data);
+            console.log(data)
+        }
         //setClass(chosenSub, data)
     }
 
@@ -78,7 +87,7 @@ const SetUpClasses = ({navigation}) => {
           <Text style={styles.txt}> Select Start Time </Text>
     </TouchableOpacity>
     <Text style={styles.text}>{time.toLocaleTimeString([], {hour: 'numeric', minute:'2-digit', hour12: true})}</Text>
-    <Input label={"Course Length in Weeks"} style={{}} textInputConfig={{keyboardType: 'number-pad', onChangeText: setLengthOfCourse(x)}}/>
+    <TextInput keyboardType='number-pad' style={styles.input} onChangeText={(x)=>{setLengthOfCourse(x)}}/>
     <TouchableOpacity
           title="Confirm"
           onPress={()=>{Confirm()}}
@@ -118,6 +127,15 @@ const styles = StyleSheet.create({
         color:'black'
         
       },
+      input: {
+        padding: 6,
+        borderRadius: 6,
+        fontSize: 18,
+        backgroundColor: 'white',
+        color:'black',
+        marginTop: 5
+    
+    },
       confirm:{
       backgroundColor: '#608d56',
       borderRadius: 5,

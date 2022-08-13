@@ -23,7 +23,7 @@ import Admin from './components/Admin.js';
 import AddTeacher from './components/AddTeacher.js';
 import TeacherHome from './components/TeacherHome.js';
 import SetUpClasses from './components/SetUpClasses.js';
-
+import NewSubject from './components/NewSubject';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -40,6 +40,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={globalScreenOptions} initialRouteName="Login">
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="NewSubject" options={{title:"New Subject"}} component={NewSubject}/>
         <Stack.Screen name="Parent" component={Parent} />
         <Stack.Screen name="Admin" component={Admin}/>
         <Stack.Screen name="SignUp" component={SignUp} />

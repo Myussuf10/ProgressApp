@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TeacherRepo extends CrudRepository<Teacher, Integer> {
+
+    Teacher findByEmail(String email);
 }
