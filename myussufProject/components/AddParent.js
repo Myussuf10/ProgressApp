@@ -17,17 +17,13 @@ const AddParent =({navigation}) => {
       return{
         ...currentInput,
         [inputId]:enteredValue,
+        password: Math.random().toString(36).substring(2,7)
       };
     });
   }
 
   const Assign =()=>{
-    const y = Math.random().toString(36).substring(2,7);
-    setInputValues((x)=>{
-      return{
-      ...x,
-       password:y,
-    }});
+ 
     storeParents(inputValues);
     navigation.pop();
   }

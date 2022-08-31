@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
 
@@ -14,17 +16,19 @@ import javax.persistence.*;
 public class Comments {
 
     @EmbeddedId
+            @GeneratedValue(strategy = GenerationType.IDENTITY)
     CommentsKey id;
 
-    @ManyToOne @MapsId("studentId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("studentId")
             @JoinColumn(name="studentid")
+            @JsonBackReference(value = "student-comment")
     Student student;
 
-    @ManyToOne @MapsId("teacherId") @JoinColumn(name = "teacherid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("teacherId") @JoinColumn(name = "teacherid")
+            @JsonBackReference(value = "teacher-comments")
     Teacher teacher;
-
-    @ManyToOne @MapsId("subjectId") @JoinColumn(name = "subjectid")
-    Subject subject;
 
     String comment;
 }

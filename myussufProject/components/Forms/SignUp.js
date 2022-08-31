@@ -3,10 +3,8 @@ import React from 'react'
 import Input from './Input'
 import Parent from '../Parent'
 import { useState } from 'react'
-import  CheckBox  from '@react-native-community/checkbox'
 import { storeStudent, fetchSubjects, assigSub } from '../util/http'
 import { useEffect } from 'react'
-import { getKeyByValue } from '../util/helperFunctions'
 
 
 const SignUp = ({navigation}) => {
@@ -45,8 +43,8 @@ const SignUp = ({navigation}) => {
 
 
    async function Assign() {
-      // student.dob= new Date(student.dob);
-      // const sudid = await storeStudent(Parents, student);
+      student.dob= new Date(student.dob);
+      const sudid = await storeStudent(Parents, student);
           
     
   }

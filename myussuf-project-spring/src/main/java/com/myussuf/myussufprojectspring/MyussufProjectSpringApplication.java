@@ -15,13 +15,6 @@ public class MyussufProjectSpringApplication {
 		SpringApplication.run(MyussufProjectSpringApplication.class, args);
 	}
 
-	@PostConstruct
-	protected void init(){
-		List<Authority> authorities = new ArrayList<>();
-		authorities.add(new Authority(null,"ROLE_TEACHER"));
-		authorities.add(new Authority(null,"ROLE_ADMIN"));
-		authorities.add(new Authority(null,"ROLE_PARENT"));
 
-	}
 
 }

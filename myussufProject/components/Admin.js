@@ -35,7 +35,7 @@ const Admin = ({navigation}) => {
           <Text style={styles.txt}> Add Classes </Text>
       </TouchableOpacity>
       <TouchableOpacity title="New Subject" onPress={()=>{navigation.navigate('NewSubject')}} style={styles.button}>
-          <Text style={styles.txt}> New Subject </Text>
+          <Text style={styles.txt}> Add Subjects </Text>
       </TouchableOpacity>
       </View>
       
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     background: {
       alignItems: 'center',
       justifyContent: 'center',  
+      marginTop: 5
     
     },
     txt: {

@@ -2,11 +2,13 @@ package com.myussuf.myussufprojectspring.Controllers;
 
 import com.myussuf.myussufprojectspring.Entities.Student;
 import com.myussuf.myussufprojectspring.Entities.Subject;
+import com.myussuf.myussufprojectspring.MyussufProjectSpringApplication;
 import com.myussuf.myussufprojectspring.Services.StudentServImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -15,7 +17,7 @@ public class StudentController {
     private StudentServImpl studentServImpl;
 
     @Autowired
-    public StudentController(StudentServImpl studentServImpl){
+    public StudentController(StudentServImpl studentServImpl) {
         this.studentServImpl = studentServImpl;
     }
 
@@ -32,7 +34,7 @@ public class StudentController {
     }
 
     @GetMapping("/student/students")
-    public List<Student> getAllStudents(){
+    public List<Student> getAllStudents() {
       return  studentServImpl.getAllStudents();
     }
 
@@ -42,9 +44,4 @@ public class StudentController {
         return studentServImpl.getStudent(student.getId()).getId();
     }
 
-    @PutMapping("/student/{subjectid}/{studentid}")
-    public void enrollStudent(@PathVariable int subjectid, @PathVariable int studentid){
-        studentServImpl.assignStudentToSub(subjectid,studentid);
-
-    }
 }

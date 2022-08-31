@@ -1,14 +1,24 @@
 package com.myussuf.myussufprojectspring.Controllers;
 
-import com.myussuf.myussufprojectspring.Entities.Teacher;
+import com.myussuf.myussufprojectspring.Entities.*;
+import com.myussuf.myussufprojectspring.Services.AttendanceWrapper;
 import com.myussuf.myussufprojectspring.Services.TeacherServImpl;
+import com.myussuf.myussufprojectspring.security.userDetailsServices.AuthorityService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/teacher")
+@AllArgsConstructor
 public class TeacherController {
     private TeacherServImpl teacherServImpl;
+    private PasswordEncoder passwordEncoder;
+    private AuthorityService authorityService;
 
     @Autowired
     public TeacherController(TeacherServImpl teacherServImpl) {
@@ -20,10 +30,38 @@ public class TeacherController {
         return teacherServImpl.getTeacher(id);
     }
 
+    @GetMapping("/email/{email}")
+    public Teacher getTeacherByEmail(@PathVariable String email){
+       return teacherServImpl.getTeacherByEmail(email);
+    }
+
+    @GetMapping("/all")
+    public List<Teacher> getTeachers(){return teacherServImpl.getAllTeachers();}
+
     @PostMapping("/teacher")
     public void signUpTeacher(@RequestBody Teacher teacher){
-
-        System.out.println(teacher);
         teacherServImpl.saveTeacher(teacher);
+    }
+
+    @PostMapping("/{studentid}/comment/{teacherid}")
+    public Student setComment(@PathVariable int studentid, @PathVariable int teacherid, @RequestBody String comments){
+    return teacherServImpl.setComments(studentid,teacherid, comments );
+
+    }
+
+
+
+    @PostMapping("/attendance/{classid}")
+    public List<Student> setAttendance(
+            @RequestBody AttendanceWrapper students,
+            @PathVariable int classid
+            )
+    {
+       return teacherServImpl.recordAttendance(students, classid);
+    }
+
+    @GetMapping("/attendance")
+    public List<Attendance> getAttendance(){
+        return teacherServImpl.getattendance();
     }
 }

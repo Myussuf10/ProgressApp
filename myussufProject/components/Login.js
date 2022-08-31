@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useContext } from 'react';
 import {
   requireNativeComponent,
   KeyboardAvoidingView,
@@ -12,16 +13,31 @@ import {
   useColorScheme,
   View,
   Button,
+  Alert,
 } from 'react-native';
-import ForgotPassword from './ForgotPassword.js';
-import Parent from './Parent.js';
-import Admin from './Admin.js';
+import { AuthContext } from './store/AuthContext';
+import { login } from './util/http';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState(' ');
   const [password, setPassword] = useState(' ');
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const authCtx = useContext(AuthContext);
 
-  const login = () => { };
+  async function handleSubmit(email,password) {
+    console.log(email, password)
+    setIsAuthenticating(true)
+    try {
+      const response = await login(email, password) 
+      console.log(response);
+      authCtx.authenticate(response.accestoken, response.userrole, email);
+    } catch (error) {
+      Alert.alert('Authentication Failed', 'Please try again')
+      setIsAuthenticating(false)
+      console.log(error)
+      setIsAuthenticating(false)
+    }
+  };
   return (
     <KeyboardAvoidingView behavior="height" style={styles.screen}>
       <View style={styles.background}>
@@ -35,25 +51,25 @@ const Login = ({ navigation }) => {
           <TextInput
             placeholder="Password"
             placeholderTextColor="black"
+            secureTextEntry
             style={styles.txt2}
             onChangeText={val => setPassword(val)}
           />
         </View>
-        <TouchableOpacity title="LogIn" onPress={login} style={styles.button}>
+        <TouchableOpacity title="LogIn" onPress={() => { handleSubmit(email, password) }} style={styles.button}>
           <Text style={styles.txt}> Login </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           title="Admin"
           onPress={() => {
-            navigation.navigate(Admin);
+            null
           }}
           style={styles.button}>
           <Text style={styles.txt}> Forgot Password </Text>
         </TouchableOpacity>
 
-       
-      </View> 
+      </View>
     </KeyboardAvoidingView>
   );
 };

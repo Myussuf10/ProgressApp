@@ -1,25 +1,121 @@
 package com.myussuf.myussufprojectspring.Services;
 
-import com.myussuf.myussufprojectspring.Entities.Teacher;
+import com.myussuf.myussufprojectspring.Entities.*;
+import com.myussuf.myussufprojectspring.Entities.Class;
+import com.myussuf.myussufprojectspring.Repository.AttendanceRepo;
+import com.myussuf.myussufprojectspring.Repository.CommentsRepo;
 import com.myussuf.myussufprojectspring.Repository.TeacherRepo;
+import com.myussuf.myussufprojectspring.security.userDetailsServices.AuthorityService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
-@AllArgsConstructor
-public class TeacherServImpl {
+@Transactional
+public class TeacherServImpl implements UserDetailsService {
     private TeacherRepo teacherRepo;
     private EmailSenderServ emailSenderServ;
+    private PasswordEncoder passwordEncoder;
+    private AuthorityService authorityService;
+    private StudentServImpl studentServ;
+    private ClassServImpl classServ;
+    private AttendanceRepo attendanceRepo;
+    private CommentsRepo commentsRepo;
 
-    public Teacher getTeacher(int teacherid){
-       return teacherRepo.findById(teacherid).get();
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+       Teacher teacher = teacherRepo.findByEmail(s);
+       if(teacher==null){
+           throw new UsernameNotFoundException("user not found");
+       }
+        return new User(teacher.getEmail(),teacher.getPassword(),teacher.getAuthorities());
+    }
+
+    public TeacherServImpl(TeacherRepo teacherRepo, EmailSenderServ emailSenderServ,
+                           PasswordEncoder passwordEncoder, AuthorityService authorityService,
+                           StudentServImpl studentServ, @Lazy ClassServImpl classServ,CommentsRepo commentsRepo,
+                           AttendanceRepo attendanceRepo) {
+        this.teacherRepo = teacherRepo;
+        this.emailSenderServ = emailSenderServ;
+        this.passwordEncoder = passwordEncoder;
+        this.authorityService = authorityService;
+        this.studentServ = studentServ;
+        this.classServ = classServ;
+        this.commentsRepo = commentsRepo;
+    }
+
+    public List<Teacher> getAllTeachers(){
+        List<Teacher> teachers = new ArrayList<>();
+        teacherRepo.findAll().forEach(x->teachers.add(x));
+        return teachers;
+    }
+
+    public Teacher getTeacherByEmail(String email){
+        return teacherRepo.findByEmail(email);
+    }
+
+    public Teacher getTeacher(Integer id){
+        return teacherRepo.findById(id).get();
     }
 
     public void saveTeacher(Teacher teacher){
         String em= "Auto generated email";
         String pass = "Your Generated password is " + teacher.getPassword();
         emailSenderServ.sendEmail(teacher.getEmail(),em, pass);
+        String encryptedPassword = passwordEncoder.encode(teacher.getPassword());
+
+        List<Authority> authoritiesList = new ArrayList<>();
+        authoritiesList.add(authorityService.createAuthority("ROLE_TEACHER"));
+        teacher.setPassword(encryptedPassword);
+        teacher.setAuthorities(authoritiesList);
         teacherRepo.save(teacher);
     }
+
+    public Student setComments(int studentid,int teacherid, String comments){
+        Student student = studentServ.getStudent(studentid);
+        Teacher teacher = teacherRepo.findById(teacherid).get();
+        Comments comments1 = new Comments();
+        comments1.setComment(comments);
+        comments1.setTeacher(teacher);
+        comments1.setStudent(student);
+        CommentsKey commentsKey = new CommentsKey();
+        commentsKey.setStudentId(studentid);
+        commentsKey.setTeacherId(teacherid);
+        comments1.setId(commentsKey);
+        commentsRepo.save(comments1);
+        return student;
+    }
+
+    public List<Student> recordAttendance(AttendanceWrapper student, int classid){
+        Class lesson = classServ.getClassDetails(classid);
+        Attendance attendance = new Attendance();
+        attendance.setRegister(lesson);
+        List<Student> students = new ArrayList<>();
+        for(int x: student.getStudentids()){
+            students.add(studentServ.getStudent(x));
+        }
+        for (Student y: students){
+            attendance.getStudents().add(y);
+        }
+        attendanceRepo.save(attendance);
+        return attendance.getStudents();
+    }
+
+    public List<Attendance> getattendance(){
+        List<Attendance> attendances = new ArrayList<>();
+        attendanceRepo.findAll().forEach(attendance1 -> attendances.add(attendance1));
+
+        return attendances;
+    }
+
 }

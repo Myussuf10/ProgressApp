@@ -20,7 +20,4 @@ public class CommentsKey implements Serializable {
     @Column(name = "teacherid")
     int teacherId;
 
-    @Column(name = "subjectid")
-    int subjectId;
-
 }

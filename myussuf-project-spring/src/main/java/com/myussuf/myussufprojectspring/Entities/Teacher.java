@@ -2,7 +2,9 @@ package com.myussuf.myussufprojectspring.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -36,7 +38,7 @@ public class Teacher implements UserDetails {
     @JsonManagedReference(value = "teacher-subject")
     private List<Subject> subjects;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher", orphanRemoval = true)
     private List<Comments> comments;
 
     public List<Subject> getSubjects() {
@@ -50,7 +52,7 @@ public class Teacher implements UserDetails {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "AUTH_TEACHER_AUTHORITY", joinColumns = @JoinColumn(referencedColumnName = "teacherid")
             ,inverseJoinColumns = @JoinColumn(referencedColumnName = "id"))
-    private List<Authority> authorities;
+    private List<Authority> authorities = new ArrayList<>();
 
     public Teacher(String firstname, String lastname, String email, String password) {
         this.firstname = firstname;
@@ -60,6 +62,7 @@ public class Teacher implements UserDetails {
     }
 
     public Teacher() {
+
 
     }
 
@@ -99,6 +102,7 @@ public class Teacher implements UserDetails {
         this.email = email;
     }
 
+    @JsonManagedReference(value = "teacher-comments")
     public List<Comments> getComments() {
         return comments;
     }

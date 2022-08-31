@@ -34,10 +34,13 @@ public class Student {
 
     private String school;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany()
+    @JoinTable(name = "student_subject",
+            joinColumns = @JoinColumn(referencedColumnName = "studentid"),
+            inverseJoinColumns = @JoinColumn(referencedColumnName = "subjectid"))
     private List<Subject> subjects;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", orphanRemoval = true)
     private List<Comments> comments;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,
@@ -57,6 +60,7 @@ public class Student {
         return id == student.id && Objects.equals(firstname, student.firstname) && Objects.equals(lastname, student.lastname) && Objects.equals(dob, student.dob) && Objects.equals(school, student.school) && Objects.equals(subjects, student.subjects) && Objects.equals(parent, student.parent);
     }
 
+    @JsonManagedReference(value = "student-comment")
     public List<Comments> getComments() {
         return comments;
     }

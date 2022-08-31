@@ -5,6 +5,7 @@ import com.myussuf.myussufprojectspring.Entities.Subject;
 import com.myussuf.myussufprojectspring.Repository.ClassRepo;
 import lombok.AllArgsConstructor;
 import org.apache.tomcat.jni.Local;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class ClassServImpl implements ClassServ{
     private final static  DateTimeFormatter formatter =
             DateTimeFormatter.ofPattern("dd MMM yyyy");
     private ClassRepo classRepo;
-    private SubjectServImpl subjectServ;
+    private @Lazy SubjectServImpl subjectServ;
 
     @Override
     public Class getClassDetails(int id) {

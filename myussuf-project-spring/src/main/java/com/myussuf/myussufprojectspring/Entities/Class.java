@@ -2,6 +2,8 @@ package com.myussuf.myussufprojectspring.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,15 +29,24 @@ public class Class {
     //@JsonFormat(pattern = "yyyy-mm-dd")
     private String dow;
 
+    @OneToOne(mappedBy = "register")
+    private Attendance attendance;
+
     @Column(name = "classtime")
     //@Temporal(TemporalType.TIME)
     private String time;
 
     @ManyToOne(cascade = {CascadeType.PERSIST,
-    CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE})
-    @JoinColumn(name = "subject_class", referencedColumnName = "subjectid")
-    @JsonBackReference(value = "subject-class")
+    CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "subjectid")
     private Subject subject;
 
 
+    public Attendance getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(Attendance attendance) {
+        this.attendance = attendance;
+    }
 }

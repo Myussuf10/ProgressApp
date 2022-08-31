@@ -14,61 +14,54 @@ import { useEffect } from 'react';
 import { fetchParents, fetchSubjects } from './util/http';
 import SelectDropdown from 'react-native-select-dropdown';
 import Dropdown from './Forms/Dropdown';
-import  CheckBox  from '@react-native-community/checkbox'
+import CheckBox from '@react-native-community/checkbox'
 
 
-const Subject = ({setMaths, label}) => {
-  const [state, setState] = useState({Maths:false, Science:false, English:false});
+const Subject = ({ setMaths, label }) => {
+  const [state, setState] = useState({ Maths: false, Science: false, English: false });
   const [subjects, setSubjects] = useState()
   const [English, setEnglish] = useState(false)
   const [Science, setScience] = useState(false)
 
 
-  useEffect(()=>{
-    async function getSubjects(){
+  useEffect(() => {
+    async function getSubjects() {
       const subjects = await fetchSubjects();
-       setSubjects(subjects)
-     }
-     getSubjects();
-     console.log(subjects)
+      setSubjects(subjects)
+    }
+    getSubjects();
+    console.log(subjects)
   })
-  const inputHandler=(newValue, target)=>{
-    setState((currentInput)=>{
-      return{
+  const inputHandler = (newValue, target) => {
+    setState((currentInput) => {
+      return {
         ...currentInput,
-        [target]:newValue
+        [target]: newValue
       };
-      
+
     })
     setSub(...state);
   }
 
- 
+
 
   return (
-    // <ListItem>
-    // <Avatar rounded 
-    // source={{
-    //     uri: 
-    //     "https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg",}}/>
-    // </ListItem>
-    // Invoking get method to perform a GET request
 
-    <View style={{alignContent:"center"}}>
+    <View style={{ alignContent: "center" }}>
 
-    
 
-       
-        {/* <CheckBox style={styles.box} value={state.label} 
+
+
+      {/* <CheckBox style={styles.box} value={state.label} 
         onValueChange={(value) => 
         {console.log(value),setState({...state, [label]:value}, setSub({...state}), ), console.log(state); } }/>
         <Text style={styles.box}>{label}</Text> */}
 
-        {/* <CheckBox style={styles.box} value={Maths} 
+      {/* <CheckBox style={styles.box} value={Maths} 
         onValueChange={(value) => 
         {setMath( value),console.log(Maths); } }/>
         <Text style={styles.box}>Maths</Text> */}
-        
+
 
 
     </View>
@@ -78,11 +71,11 @@ const Subject = ({setMaths, label}) => {
 export default Subject;
 
 const styles = StyleSheet.create({
-  box:{
-    marginLeft:60
+  box: {
+    marginLeft: 60
   },
-  txt:{
-    color:'black'
+  txt: {
+    color: 'black'
   },
-  
+
 });

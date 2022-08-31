@@ -1,13 +1,20 @@
 package com.myussuf.myussufprojectspring.Services;
 
 import com.myussuf.myussufprojectspring.Entities.Admin;
+import com.myussuf.myussufprojectspring.Entities.Authority;
 import com.myussuf.myussufprojectspring.Entities.Parent;
 import com.myussuf.myussufprojectspring.Entities.Student;
 import com.myussuf.myussufprojectspring.Repository.ParentRepo;
 import com.myussuf.myussufprojectspring.Repository.StudentRepo;
 import com.myussuf.myussufprojectspring.exceptions.AuthException;
+import com.myussuf.myussufprojectspring.security.userDetailsServices.AuthorityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,16 +23,22 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ParentServImpl {
+@AllArgsConstructor
+public class ParentServImpl implements UserDetailsService {
     private ParentRepo parentRepo;
     private StudentRepo studentRepo;
     private EmailSenderServ emailSenderServ;
+    private PasswordEncoder passwordEncoder;
+    private AuthorityService authorityService;
 
-    @Autowired
-    public ParentServImpl(ParentRepo parentRepo, StudentRepo studentRepo, EmailSenderServ emailSenderServ){
-        this.studentRepo = studentRepo;
-        this.parentRepo = parentRepo;
-        this.emailSenderServ = emailSenderServ;
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        Parent parent = parentRepo.findByEmail(s);
+        if(parent==null){
+            throw new UsernameNotFoundException("Username not found");
+        }
+        return new User(parent.getEmail(),parent.getPassword(), parent.getAuthorities());
     }
 
     public Parent getParent(Integer id){
@@ -43,6 +56,12 @@ public class ParentServImpl {
         String em= "Auto generated email";
         String pass = "Your Generated password is " + parent.getPassword();
         emailSenderServ.sendEmail(parent.getEmail(),em, pass);
+        String encryptedPassword = passwordEncoder.encode(parent.getPassword());
+        List<Authority> authoritiesList = new ArrayList<>();
+        authoritiesList.add(authorityService.createAuthority("ROLE_PARENT"));
+        parent.setPassword(encryptedPassword);
+        parent.setAuthorities(authoritiesList);
         parentRepo.save(parent);
     }
+
 }

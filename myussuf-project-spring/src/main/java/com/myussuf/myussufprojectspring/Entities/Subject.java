@@ -1,25 +1,28 @@
 package com.myussuf.myussufprojectspring.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "subject")
 public class Subject {
 
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "ssubject_pkey")
+    @GeneratedValue(strategy = SEQUENCE, generator = "subject_pkey")
     @SequenceGenerator(name="subject_pkey", sequenceName = "subject_pkey", allocationSize = 1)
     @Column(name = "subjectid", updatable = false, nullable = false)
     private int id;
 
+    @Column(name = "subjectname")
     private String subjectname;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
@@ -28,27 +31,24 @@ public class Subject {
     @JsonBackReference(value = "teacher-subject")
     private Teacher teacher;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "subject")
-    private List<Comments> comments;
+    @ManyToMany(mappedBy = "subjects")
+    private List<Student> student;
 
     @OneToMany(mappedBy = "subject")
-    @JsonManagedReference(value = "subject-class")
+    @JsonBackReference(value = "subject-class")
     private List<Class> aClass;
+
+    @JsonBackReference(value = "subjects-students")
+    public List<Student> getStudent() {
+        return student;
+    }
+
+    public void setStudent(List<Student> student) {
+        this.student = student;
+    }
 
     public Subject(String subjectname) {
         this.subjectname = subjectname;
-    }
-
-    public List<Comments> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comments> comments) {
-        this.comments = comments;
-    }
-
-    public Subject() {
-
     }
 
     public int getId() {
