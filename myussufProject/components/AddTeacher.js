@@ -2,9 +2,8 @@ import { View, Text, KeyboardAvoidingView, StyleSheet } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 import Input from './Forms/Input';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 import { signUpTeacher } from './util/http';
-import Admin from './Admin';
 
 const AddTeacher = ({navigation}) => {
   const [inputValues, setInputValues] = useState({

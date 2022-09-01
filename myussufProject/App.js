@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import {
 
-  StyleSheet,
+  StyleSheet, Text,
 
 } from 'react-native';
 import Login from './components/Login.js';
@@ -22,7 +22,13 @@ import Attendance from './components/util/Attendance.js';
 import TeachingPage from './components/util/TeachingPage.js';
 import Header from './components/Header.js';
 import { useContext } from 'react';
-import AuthProvider, {AuthContext} from './components/store/AuthContext.js';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useEffect } from 'react';
+import AuthProvider from './components/store/AuthContext.js';
+import {AuthContext} from './components/store/AuthContext.js'
+import Icon  from "react-native-vector-icons/";
+
+
 
 const Stack = createStackNavigator();
 
@@ -51,7 +57,10 @@ function AdminStack() {
 function TeacherStack() {
   return (
     <Stack.Navigator screenOptions={globalScreenOptions}>
-      <Stack.Screen name="TeacherHome" component={TeacherHome} />
+      <Stack.Screen name="TeacherHome" component={TeacherHome} options={{
+        headerRight: ()=> <><Text>Log out</Text><Icon name='arrow-right' size={40} 
+        onPressIn={console.log("Loggin out")}/></>
+      }} />
       <Stack.Screen name='Comments' component={Comments}/>
       <Stack.Screen name="TeachingPage" component={TeachingPage} />
 
@@ -59,21 +68,22 @@ function TeacherStack() {
   )
 }
 
+
+function Navigation() {
+const authCtx = useContext(AuthContext);
+
 const RoleViews = {
   ROLE_ADMIN: AdminStack,
   ROLE_TEACHER: TeacherStack,
 }
 
-function Navigation() {
-  const authCtx = useContext(AuthContext);
-
-  const RoleSpecificView = RoleViews[authCtx.role] && AuthStack;
+  const RoleSpecificView = RoleViews["ROLE_TEACHER"]
   return (
+
     <NavigationContainer>
-      {/* {!authCtx.isAuthenticated && <AuthStack />}
+      {!authCtx.isAuthenticated && <AuthStack />}
       
-      {authCtx.isAuthenticated &&  <TeacherStack/>} */}
-      <RoleSpecificView/>
+      {authCtx.isAuthenticated &&  <RoleSpecificView/>}
     </NavigationContainer>
   )
 }

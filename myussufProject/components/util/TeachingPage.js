@@ -1,7 +1,7 @@
 import { Button, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import { Icon } from "@rneui/themed";
-import { State, TouchableOpacity } from 'react-native-gesture-handler'
+import { State, TouchableOpacity } from 'react-native'
 import { Avatar } from '@rneui/base'
 import { useEffect } from 'react';
 import { fetchStudentsWithSubject, Login } from './http';

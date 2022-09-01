@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
 import { Agenda, Calendar, CalendarList } from 'react-native-calendars'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native'
 import { Row, Table } from 'react-native-table-component'
 import { fetchTeacher, fetchTeacherSubject, getClasInfo, getTeacherByEmail } from './util/http'
 import TeachingPage from './util/TeachingPage'
@@ -55,7 +55,7 @@ const TeacherHome = ({ navigation }) => {
   getsub()
   setIsFetching(false)
 
-  })
+  },[state])
   
 
   if(isFetchin){

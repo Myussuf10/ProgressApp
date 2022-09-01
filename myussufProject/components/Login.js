@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   requireNativeComponent,
   KeyboardAvoidingView,
@@ -15,8 +14,9 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import { AuthContext } from './store/AuthContext';
+import  {AuthContext}  from './store/AuthContext';
 import { login } from './util/http';
+import LoadingOverlay from './util/LoadingSpinner';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState(' ');
@@ -28,16 +28,21 @@ const Login = ({ navigation }) => {
     console.log(email, password)
     setIsAuthenticating(true)
     try {
-      const response = await login(email, password) 
+       const response = await login(email, password) 
       console.log(response);
       authCtx.authenticate(response.accestoken, response.userrole, email);
     } catch (error) {
       Alert.alert('Authentication Failed', 'Please try again')
-      setIsAuthenticating(false)
       console.log(error)
       setIsAuthenticating(false)
     }
+
+    return () =>{setIsAuthenticating(false)}
+
   };
+  if(isAuthenticating){
+    return <LoadingOverlay/>
+  }
   return (
     <KeyboardAvoidingView behavior="height" style={styles.screen}>
       <View style={styles.background}>

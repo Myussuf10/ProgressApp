@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { createContext } from "react";
 import React from "react";
+import { login } from "../util/http";
+import { useEffect } from "react";
 
 export const AuthContext = createContext({
     token: '',
@@ -10,11 +12,11 @@ export const AuthContext = createContext({
     teacher: {},
     authenticate: (token, role) => { },
     logout: () => { },
-    setTeacher: ()=>{}
+    setTeacher: ()=>{},
 });
 
 function AuthProvider({children}) {
-const [authToken, setAuthToken] = useState();
+const [authToken, setAuthToken] = useState('');
 const [role, setRole] = useState('');
 const [email, setEmail] = useState('');
 const [teacherinfo, setTeacherInfo] = useState({
@@ -42,6 +44,25 @@ function logout(){
 
 function setTeacher(teacherinfo){
     setTeacherInfo(teacherinfo)
+}
+
+useEffect(()=>{
+    
+})
+
+
+async function AuthenticaTe(email, password){
+    const response = await login(email, password)
+    setAuthToken(response.accestoken)
+    setRole(response.userrole)
+    setEmail(email)
+    setTeacherInfo((info)=>{
+        return{
+            ...info,
+            email:email
+        }
+    })
+    console.log(response)
 }
 
 const value = {
