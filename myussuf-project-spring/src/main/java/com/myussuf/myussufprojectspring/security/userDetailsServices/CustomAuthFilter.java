@@ -50,7 +50,7 @@ public class CustomAuthFilter extends UsernamePasswordAuthenticationFilter {
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
         response.setHeader("accesToken", access_token);
-        response.setHeader("userRole", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()).toString());
+        response.setHeader("userRole", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining("")));
         Map<String, String> token = new HashMap<>();
         token.put("accesstoken", access_token);
         response.setContentType(APPLICATION_JSON_VALUE);

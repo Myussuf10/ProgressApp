@@ -49,16 +49,16 @@ public class TeacherController {
 
     }
 
-
-
     @PostMapping("/attendance/{classid}")
-    public List<Student> setAttendance(
-            @RequestBody AttendanceWrapper students,
+    public Attendance setAttendance(
+            @RequestBody HelperAttendance student,
             @PathVariable int classid
             )
     {
-       return teacherServImpl.recordAttendance(students, classid);
+       return teacherServImpl.recordAttendance(student, classid);
+
     }
+
 
     @GetMapping("/attendance")
     public List<Attendance> getAttendance(){

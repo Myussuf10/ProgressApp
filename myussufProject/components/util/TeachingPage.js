@@ -21,16 +21,18 @@ const TeachingPage = ({ navigation }) => {
 
 
     useEffect(() => {
-        console.log(authCtx.role)
         async function getStudents() {
             const response = await fetchStudentsWithSubject();
             setStudents(response)
+            console.log(response)
         }
         getStudents().catch(err => { console.log(err) })
-        
+        console.log(students)
+
     }, [])
 
-    
+
+
     const showDialog = (x) => {
         setComment((currentinput) => {
             return {
@@ -41,34 +43,31 @@ const TeachingPage = ({ navigation }) => {
         setVisible(true)
         console.log(comments)
     }
-    const handleCancel = () => {
-        setVisible(false)
-    }
     async function sentComment() {
         //setVisible(false)
-        const x = await Login("myussuf1988@yahoo.com", "54hnr")
-        console.log(x);
+        //const x = await Login("myussuf1988@yahoo.com", "54hnr")
+        console.log(authCtx.role);
     }
 
-    if(visible){return (<Comments props={students} visible={handleCancel}/>)
-            
-            }
+    if (visible) {
+        return (<Comments props={students} setVisible={setVisible} />)
+
+    }
     return (
         <KeyboardAvoidingView behavior='height'
             style={{ backgroundColor: '#B4B4B4', flex: 1 }}>
-            <View style={{ alignContent: "center", justifyContent: "center", marginLeft: 175, marginTop: 5, padding: 5 }}>
+            <View style={{ alignContent: "center", flexDirection: 'row', justifyContent: "center", marginTop: 5, padding: 5 }}>
                 <Avatar rounded
                     source={{
                         uri:
                             "https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg",
                     }} />
-                <Text style={{ fontSize: 18 }}>{ }</Text>
-                {/* ()=>{navigation.navigate(Attendance)} */}
-                <TouchableOpacity onPress={()=>{sentComment()}} style={{
+                <Text style={{ fontSize: 18, padding: 5 }}>{"Mr" + " " + authCtx.userInfo.lastname}</Text>
+                <TouchableOpacity onPress={()=>{navigation.navigate("Attendance")}} style={{
                     backgroundColor: '#608d56',
-                            borderRadius: 2, padding: 4, width: 130, margin: 2
+                    borderRadius: 2, padding: 4, width: 130, margin: 2
                 }}>
-                    <Text style={{textAlign:'center'}}>Attendance</Text>
+                    <Text style={{ textAlign: 'center' }}>Attendance</Text>
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'row' }}>
@@ -82,18 +81,24 @@ const TeachingPage = ({ navigation }) => {
                     <View key={student.id} style={styles.items}>
                         <Text style={styles.text}>{student.name}</Text>
                         <Text style={styles.text}>{student.school}</Text>
-                        <TouchableOpacity onPress={()=>showDialog(student.id)} style={{
-                            backgroundColor: '#608d56',
-                            borderRadius: 2, padding: 4, width: 130, margin: 2
+                        {<TouchableOpacity onPress={() => showDialog(student.id)} style={{
+                            backgroundColor: '#B0b311',
+                            borderRadius: 2, padding: 3, width: 80, margin: 2
                         }}>
-                            <Text style={{ textAlign: 'center' }}>Leave Comment</Text>
+                            <Text style={{ textAlign: 'center' }}>Read Comment</Text>
+                        </TouchableOpacity>}
+                        <TouchableOpacity onPress={() => showDialog(student.id)} style={{
+                            backgroundColor: '#608d56',
+                            borderRadius: 2, padding: 3, width: 80, margin: 2
+                        }}>
+                            <Text style={{ textAlign: 'center' }}>Comment</Text>
                         </TouchableOpacity>
                     </View>
                 )
 
             })}
-           
-            
+
+
 
 
 
@@ -142,6 +147,6 @@ const styles = StyleSheet.create({
         width: 200,
         margin: 5
     },
-    
+
 
 });

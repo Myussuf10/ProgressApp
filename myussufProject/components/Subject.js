@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -15,56 +15,31 @@ import { fetchParents, fetchSubjects } from './util/http';
 import SelectDropdown from 'react-native-select-dropdown';
 import Dropdown from './Forms/Dropdown';
 import CheckBox from '@react-native-community/checkbox'
+import { AuthContext } from './store/AuthContext';
 
 
-const Subject = ({ setMaths, label }) => {
-  const [state, setState] = useState({ Maths: false, Science: false, English: false });
-  const [subjects, setSubjects] = useState()
-  const [English, setEnglish] = useState(false)
-  const [Science, setScience] = useState(false)
-
-
-  useEffect(() => {
-    async function getSubjects() {
-      const subjects = await fetchSubjects();
-      setSubjects(subjects)
-    }
-    getSubjects();
-    console.log(subjects)
-  })
-  const inputHandler = (newValue, target) => {
-    setState((currentInput) => {
-      return {
-        ...currentInput,
-        [target]: newValue
-      };
-
-    })
-    setSub(...state);
-  }
-
-
+const Subject = ({ navigation }) => {
+  const authCtx = useContext(AuthContext)
 
   return (
-
-    <View style={{ alignContent: "center" }}>
-
-
-
-
-      {/* <CheckBox style={styles.box} value={state.label} 
-        onValueChange={(value) => 
-        {console.log(value),setState({...state, [label]:value}, setSub({...state}), ), console.log(state); } }/>
-        <Text style={styles.box}>{label}</Text> */}
-
-      {/* <CheckBox style={styles.box} value={Maths} 
-        onValueChange={(value) => 
-        {setMath( value),console.log(Maths); } }/>
-        <Text style={styles.box}>Maths</Text> */}
-
-
+    <View style={{ backgroundColor: '#B4B4B4', flex: 1 }}>
+      <View style={styles.row}>
+        <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('SubjectPage') }} style={styles.button}>
+          <Text style={styles.txt}> Time Table </Text>
+        </TouchableOpacity>
+        <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('SubjectPage') }} style={styles.button}>
+          <Text style={styles.txt}> Attendance</Text>
+        </TouchableOpacity>
+        <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('SubjectPage') }} style={styles.button}>
+          <Text style={styles.txt}> Progress</Text>
+        </TouchableOpacity>
+        <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('SubjectPage') }} style={styles.button}>
+          <Text style={styles.txt}> Leave comment </Text>
+        </TouchableOpacity>
+      </View>
 
     </View>
+
   );
 };
 
@@ -75,7 +50,23 @@ const styles = StyleSheet.create({
     marginLeft: 60
   },
   txt: {
-    color: 'black'
+    textAlign: 'center',
+    fontSize: 20,
+    color: "white",
+  },
+  row: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 100
+
+  },
+  button: {
+    backgroundColor: '#608d56',
+    borderRadius: 5,
+    padding: 10,
+    height: 50,
+    margin: 5,
+    alignContent: 'center'
   },
 
 });

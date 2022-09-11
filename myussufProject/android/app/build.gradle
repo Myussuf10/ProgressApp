@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 
+
 import com.android.build.OutputFile
 
 /**
@@ -93,6 +94,9 @@ apply from: "../../node_modules/react-native/react.gradle"
  */
 def enableSeparateBuildPerCPUArchitecture = false
 
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+
+
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
@@ -121,6 +125,7 @@ def jscFlavor = 'org.webkit:android-jsc-intl:+'
  */
 def enableHermes = project.ext.react.get("enableHermes", false);
 
+
 /**
  * Architectures to build native code for in debug.
  */
@@ -137,6 +142,10 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+    }
+
+    dexOptions {
+        javaMaxHeapSize "2g"
     }
     splits {
         abi {

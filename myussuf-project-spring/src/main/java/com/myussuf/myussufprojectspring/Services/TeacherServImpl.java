@@ -5,6 +5,7 @@ import com.myussuf.myussufprojectspring.Entities.Class;
 import com.myussuf.myussufprojectspring.Repository.AttendanceRepo;
 import com.myussuf.myussufprojectspring.Repository.CommentsRepo;
 import com.myussuf.myussufprojectspring.Repository.TeacherRepo;
+import com.myussuf.myussufprojectspring.security.userDetailsServices.AppUser;
 import com.myussuf.myussufprojectspring.security.userDetailsServices.AuthorityService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
@@ -52,6 +53,7 @@ public class TeacherServImpl implements UserDetailsService {
         this.studentServ = studentServ;
         this.classServ = classServ;
         this.commentsRepo = commentsRepo;
+        this.attendanceRepo = attendanceRepo;
     }
 
     public List<Teacher> getAllTeachers(){
@@ -96,19 +98,31 @@ public class TeacherServImpl implements UserDetailsService {
         return student;
     }
 
-    public List<Student> recordAttendance(AttendanceWrapper student, int classid){
+    public Attendance recordAttendance(HelperAttendance student, int classid){
         Class lesson = classServ.getClassDetails(classid);
-        Attendance attendance = new Attendance();
-        attendance.setRegister(lesson);
-        List<Student> students = new ArrayList<>();
-        for(int x: student.getStudentids()){
-            students.add(studentServ.getStudent(x));
-        }
-        for (Student y: students){
-            attendance.getStudents().add(y);
-        }
-        attendanceRepo.save(attendance);
-        return attendance.getStudents();
+        Student s = studentServ.getStudent(student.getStudentid());
+        if (!attendanceRepo.existsAttendanceByRegister(lesson)){
+            Attendance attendance = new Attendance();
+            attendance.setRegister(lesson);
+            attendance.getStudents().add(s);
+            attendanceRepo.save(attendance);
+            return attendance;
+        } else{
+            Attendance attendance = attendanceRepo.findAttendanceByRegister(lesson);
+            attendance.getStudents().add(s);
+            attendanceRepo.save(attendance);
+            return attendance;}
+
+        //        List<Student> students = new ArrayList<>();
+
+//        for(int x: student){
+//            students.add(studentServ.getStudent(x));
+//        }
+
+//        for (Student y: students){
+//            attendance. getStudents().add(y);
+//        }
+
     }
 
     public List<Attendance> getattendance(){

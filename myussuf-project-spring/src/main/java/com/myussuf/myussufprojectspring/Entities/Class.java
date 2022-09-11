@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,12 +16,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "class")
-@Getter
-@Setter
+@Data
 public class Class {
 
     @Id
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "classid", updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -36,12 +36,15 @@ public class Class {
     //@Temporal(TemporalType.TIME)
     private String time;
 
+    @Column(name = "topic")
+    private String topic;
+
     @ManyToOne(cascade = {CascadeType.PERSIST,
     CascadeType.REFRESH,CascadeType.DETACH,CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "subjectid")
     private Subject subject;
 
-
+    @JsonBackReference(value = "attendance-register")
     public Attendance getAttendance() {
         return attendance;
     }

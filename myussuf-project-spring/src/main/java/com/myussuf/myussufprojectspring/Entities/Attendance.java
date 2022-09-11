@@ -1,7 +1,10 @@
 package com.myussuf.myussufprojectspring.Entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Singular;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,29 +16,27 @@ import java.util.List;
 public class Attendance {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
 
-    @OneToMany
-    @JoinTable(
-            name = "student_attendance",
-            joinColumns = @JoinColumn(name = "attendanceid")
-    )
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attendance", orphanRemoval = true)
     private List<Student> students = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "class_id", referencedColumnName = "id")
+    @JoinColumn(name = "classid")
     private Class register;
 
     public int getId() {
         return id;
     }
 
-    public Class getRegister() {
-        return register;
-    }
-
     public void setRegister(Class register) {
         this.register = register;
+    }
+
+   // @JsonManagedReference(value = "attendance-register")
+    public Class getRegister() {
+        return register;
     }
 
     public void setId(int id) {
@@ -45,7 +46,6 @@ public class Attendance {
     public List<Student> getStudents() {
         return students;
     }
-
 
     public void setStudents(List<Student> students) {
         this.students = students;

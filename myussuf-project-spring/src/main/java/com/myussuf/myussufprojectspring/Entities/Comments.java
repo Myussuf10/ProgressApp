@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Comments {
 
     @EmbeddedId
-            @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     CommentsKey id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,7 +27,7 @@ public class Comments {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("teacherId") @JoinColumn(name = "teacherid")
-            @JsonBackReference(value = "teacher-comments")
+    @JsonBackReference(value = "teacher-comments")
     Teacher teacher;
 
     String comment;

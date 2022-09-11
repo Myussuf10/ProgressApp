@@ -1,6 +1,7 @@
 package com.myussuf.myussufprojectspring.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +26,11 @@ public class Student {
 
     @Pattern(regexp = "^[A-Za-z]+$", message = "First name cannot have spaces")
     private String firstname;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "student_attendance",
+    joinColumns = @JoinColumn(referencedColumnName = "studentid"))
+    private Attendance attendance;
 
     @Pattern(regexp = "^[A-Za-z]+$", message = "Last name cannot have spaces")
     private String lastname;

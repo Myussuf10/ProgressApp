@@ -48,4 +48,10 @@ public class ClassServImpl implements ClassServ{
         clas.setSubject(y);
         return classRepo.save(clas);
     }
+
+    public List<Class> findClassesBySubjectId(int subjectid){
+        return classRepo.findClassesBySubjectId(subjectid);
+    }
+
+
 }

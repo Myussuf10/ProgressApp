@@ -53,6 +53,10 @@ public class AdminServImpl implements UserDetailsService {
         return x;
     }
 
+    public Admin getAdminByEmail(String email){
+        return adminRepo.findByEmail(email);
+    }
+
     public Student updateStudent(int id, Map<Object, Object> updatedmap){
         Student student = studentServ.getStudent(id);
         updatedmap.forEach((key,value)->{

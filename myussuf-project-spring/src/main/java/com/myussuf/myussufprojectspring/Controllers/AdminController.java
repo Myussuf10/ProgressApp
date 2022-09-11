@@ -44,6 +44,10 @@ public class AdminController {
         
         return "Completed";
     }
+    @GetMapping("/{email}")
+    public Admin getAdminByEmail(@PathVariable String email){
+        return adminServImpl.getAdminByEmail(email);
+    }
 
     @PatchMapping("/student/{studentid}")
     public Student updateStudent(@PathVariable int studentid, @RequestBody Map<Object, Object> updatedmap ){
@@ -54,6 +58,11 @@ public class AdminController {
     @PatchMapping("/student/{subjectid}/{studentid}")
     public Student setSubject(@PathVariable int subjectid, @PathVariable int studentid){
         return adminServImpl.setSubject(subjectid, studentid);
+    }
+
+    @GetMapping("/user")
+    public Object secured(Authentication authentication){
+        return authentication.getPrincipal();
     }
 
 

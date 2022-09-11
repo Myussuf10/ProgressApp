@@ -1,9 +1,7 @@
 package com.myussuf.myussufprojectspring.Services;
 
-import com.myussuf.myussufprojectspring.Entities.Admin;
-import com.myussuf.myussufprojectspring.Entities.Authority;
-import com.myussuf.myussufprojectspring.Entities.Parent;
-import com.myussuf.myussufprojectspring.Entities.Student;
+import com.myussuf.myussufprojectspring.Entities.*;
+import com.myussuf.myussufprojectspring.Entities.Class;
 import com.myussuf.myussufprojectspring.Repository.ParentRepo;
 import com.myussuf.myussufprojectspring.Repository.StudentRepo;
 import com.myussuf.myussufprojectspring.exceptions.AuthException;
@@ -30,6 +28,8 @@ public class ParentServImpl implements UserDetailsService {
     private EmailSenderServ emailSenderServ;
     private PasswordEncoder passwordEncoder;
     private AuthorityService authorityService;
+    private ClassServImpl classServ;
+    private SubjectServImpl subjectServ;
 
 
     @Override
@@ -62,6 +62,14 @@ public class ParentServImpl implements UserDetailsService {
         parent.setPassword(encryptedPassword);
         parent.setAuthorities(authoritiesList);
         parentRepo.save(parent);
+    }
+
+    public Parent getParentByEmail(String email){
+        return parentRepo.findByEmail(email);
+    }
+
+    public List<Class> getClassBySubjectId(int subjectid){
+        return classServ.findClassesBySubjectId(subjectid);
     }
 
 }

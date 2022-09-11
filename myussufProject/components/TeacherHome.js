@@ -15,6 +15,7 @@ import { AuthContext } from './store/AuthContext'
 import { useLayoutEffect } from 'react'
 import LoadingOverlay from './util/LoadingSpinner'
 import { useMemo } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const TeacherHome = ({ navigation }) => {
   const [state, setState] = useState({});
@@ -22,40 +23,24 @@ const TeacherHome = ({ navigation }) => {
   const [isFetchin, setIsFetching] = useState(true);
   const authCtx = useContext(AuthContext)
 
-    
-  useEffect(() => {
-    setIsFetching(true)
-    let ismounted = true;
-    async function getTeacher() {
-      try{
-        const response = await getTeacherByEmail(authCtx.email)
-        setState(response);
-        ;
-
-      }catch(err){console.log(err)}
-
-    }
-
-    getTeacher() 
-    console.log(state)
-
-    return () =>{ismounted = false}
-
-  },[authCtx])
-
+if(subjects == null){
+  return <LoadingOverlay/>
+}
   useEffect(()=>{
     async function getsub(){
     try {
-      const subjects = await fetchTeacherSubject(state.id)
+      const subjects = await fetchTeacherSubject(authCtx.userInfo.id)
       setSubjects(subjects)
+      const ter = await AsyncStorage.getItem('role')
+      console.log(typeof(authCtx.role) )
     } catch (error) {
-      console.log(error)
+      console.log(authCtx)
     }
   }
   getsub()
   setIsFetching(false)
 
-  },[state])
+  },[authCtx])
   
 
   if(isFetchin){
@@ -75,7 +60,7 @@ const TeacherHome = ({ navigation }) => {
             uri:
               "https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg",
           }} />
-        <Text style={{ fontSize: 18, padding: 5 }}>{"Mr" + " " +state.firstname }</Text>
+        <Text style={{ fontSize: 18, padding: 5 }}>{"Mr" + " " + authCtx.userInfo.lastname }</Text>
       </View>
       <Text style={styles.title}>Subjects Taught</Text>
       <View style={styles.items}>

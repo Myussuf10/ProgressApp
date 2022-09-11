@@ -104,6 +104,17 @@ export async function getTeacherByEmail(email){
     return response.data
 }
 
+export async function getParentByEmail(email){
+    const response = await axios.get(BACKEND_URL + `api/parent/${email}`)
+    return response.data
+}
+
+export async function getAdminByEmail(email){
+    const response = await axios.get(BACKEND_URL + `management/${email}`)
+    return response.data
+}
+
+
 export async function login(email, password) {
     let body = {email:email, password:password }
     let x = QueryString.stringify(body)
@@ -123,20 +134,26 @@ export async function fetchStudentsWithSubject(subject) {
     });
     const subjects = [];
     for (const x in response.data) {
-        for (const y in response.data[x].subjects) {
-            const student = {
+                 const student = {
                 id: response.data[x].id,
                 name: response.data[x].firstname + " " + response.data[x].lastname,
                 school: response.data[x].school
             }
             subjects.push(student)
-
-        }
-
     }
-
+    console.log(response.data)
     return subjects
 
+}
+
+export async function sentComment(studentid, teacherid, message){
+    const response = await axios.post(BACKEND_URL + `teacher/${studentid}/comment/${teacherid}`,message)
+    return response
+}
+
+export async function getClassPerSubject(subjectid){
+    const response = await axios.get(BACKEND_URL + `api/subject/${subjectid}`)
+    return response.data
 }
 
 

@@ -14,9 +14,11 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import  {AuthContext}  from './store/AuthContext';
 import { login } from './util/http';
 import LoadingOverlay from './util/LoadingSpinner';
+import  {AuthContext}  from './store/AuthContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState(' ');
@@ -24,20 +26,19 @@ const Login = ({ navigation }) => {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const authCtx = useContext(AuthContext);
 
+ 
   async function handleSubmit(email,password) {
-    console.log(email, password)
     setIsAuthenticating(true)
+    let isMounted = true
     try {
-       const response = await login(email, password) 
-      console.log(response);
+      const response = await login(email, password);
       authCtx.authenticate(response.accestoken, response.userrole, email);
+      const role = await AsyncStorage.getItem('role')
+      console.log(role);
     } catch (error) {
       Alert.alert('Authentication Failed', 'Please try again')
-      console.log(error)
       setIsAuthenticating(false)
-    }
-
-    return () =>{setIsAuthenticating(false)}
+    }      
 
   };
   if(isAuthenticating){

@@ -54,8 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests().antMatchers("/student/**")
                     .hasAnyAuthority("ROLE_TEACHER")
+                    .antMatchers("/management").hasAnyAuthority("ROLE_ADMIN")
                     .antMatchers("/**").permitAll();
-            http.sessionManagement().sessionCreationPolicy(STATELESS);
+
+        http.sessionManagement().sessionCreationPolicy(STATELESS);
             http.addFilter(new CustomAuthFilter(authenticationManagerBean()));
             http.formLogin();
             http.httpBasic();

@@ -1,6 +1,7 @@
 package com.myussuf.myussufprojectspring.Controllers;
 
 import com.myussuf.myussufprojectspring.Entities.Authority;
+import com.myussuf.myussufprojectspring.Entities.Class;
 import com.myussuf.myussufprojectspring.Entities.Parent;
 import com.myussuf.myussufprojectspring.Services.ParentServImpl;
 import com.myussuf.myussufprojectspring.security.userDetailsServices.AuthorityService;
@@ -35,4 +36,13 @@ public class ParentController {
         parentServImpl.saveParent(parent);
     }
 
+    @GetMapping("/parent/{email}")
+    public Parent getParentByEmail(@PathVariable String email){
+        return parentServImpl.getParentByEmail(email);
+    }
+
+    @GetMapping("/subject/{subjectid}")
+    public List<Class> getClassBuSubjectId(@PathVariable int subjectid){
+        return parentServImpl.getClassBySubjectId(subjectid);
+    }
 }

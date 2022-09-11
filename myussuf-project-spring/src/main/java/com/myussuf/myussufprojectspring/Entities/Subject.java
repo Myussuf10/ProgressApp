@@ -26,15 +26,15 @@ public class Subject {
     private String subjectname;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-    CascadeType.PERSIST, CascadeType.REFRESH})
+    CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "teacherid")
     @JsonBackReference(value = "teacher-subject")
     private Teacher teacher;
 
-    @ManyToMany(mappedBy = "subjects")
+    @ManyToMany(mappedBy = "subjects", fetch = FetchType.LAZY)
     private List<Student> student;
 
-    @OneToMany(mappedBy = "subject")
+    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
     @JsonBackReference(value = "subject-class")
     private List<Class> aClass;
 

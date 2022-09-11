@@ -2,6 +2,7 @@ package com.myussuf.myussufprojectspring.Entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -17,6 +18,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @AllArgsConstructor
+@Data
 public class Teacher implements UserDetails {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "teacher_pkey")
@@ -36,7 +38,7 @@ public class Teacher implements UserDetails {
     @OneToMany(mappedBy = "teacher", cascade = {CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JsonManagedReference(value = "teacher-subject")
-    private List<Subject> subjects;
+    private List<Subject> subjects = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher", orphanRemoval = true)
     private List<Comments> comments;
