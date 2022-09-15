@@ -9,33 +9,28 @@ import {
   TouchableOpacity
 } from 'react-native';
 import axios from 'axios';
-
-import { useEffect } from 'react';
-import { fetchParents, fetchSubjects } from './util/http';
-import SelectDropdown from 'react-native-select-dropdown';
-import Dropdown from './Forms/Dropdown';
-import CheckBox from '@react-native-community/checkbox'
-import AttendanceParent from './AttendanceParent';
-import Progress from './Progress';
-import { AuthContext } from './store/AuthContext';
+import { AuthContext } from '../store/AuthContext';
+import SubjectPage from '../SubjectPage';
+import Attendance from './Attendance';
+import SetProgress from './SetProgress';
 
 
-const Subject = ({ navigation }) => {
+const SubjectTeacher = ({ navigation }) => {
   const authCtx = useContext(AuthContext)
 
   return (
     <View style={{ backgroundColor: '#B4B4B4', flex: 1 }}>
       <View style={styles.row}>
-        <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('SubjectPage') }} style={styles.button}>
+        <TouchableOpacity title="New Subject" onPress={() => {navigation.navigate(SubjectPage)}} style={styles.button}>
           <Text style={styles.txt}> Time Table </Text>
         </TouchableOpacity>
-        <TouchableOpacity title="Attendance" onPress={() => { navigation.navigate('AttendanceParent') }} style={styles.button}>
+        <TouchableOpacity title="Attendance" onPress={() => {navigation.navigate(Attendance)}} style={styles.button}>
           <Text style={styles.txt}> Attendance</Text>
         </TouchableOpacity>
-        <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('Progress') }} style={styles.button}>
+        <TouchableOpacity title="Progress" onPress={() => {navigation.navigate(SetProgress) }} style={styles.button}>
           <Text style={styles.txt}> Progress</Text>
         </TouchableOpacity>
-        <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('SubjectPage') }} style={styles.button}>
+        <TouchableOpacity title="New Subject" onPress={() => {null }} style={styles.button}>
           <Text style={styles.txt}> Leave comment </Text>
         </TouchableOpacity>
       </View>
@@ -45,7 +40,7 @@ const Subject = ({ navigation }) => {
   );
 };
 
-export default Subject;
+export default SubjectTeacher;
 
 const styles = StyleSheet.create({
   box: {

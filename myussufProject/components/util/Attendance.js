@@ -4,63 +4,84 @@ import { useState } from 'react'
 import { Avatar, CheckBox } from '@rneui/base';
 import { useContext } from 'react';
 import { AuthContext } from '../store/AuthContext';
-import { fetchStudentsWithSubject } from './http';
+import { fetchStudentsWithSubject, getStudentPerSubject, setAttendance } from './http';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 const Attendance = ({ navigation }) => {
     const [students, setStudents] = useState([]);
-    const [selected, setSelected] = useState(false)
-    const [attend, setAttend] = useState({})
+    const [attend, setAttend] = useState([])
     const authCtx = useContext(AuthContext)
 
 
     useEffect(() => {
-        async function getStudents() {
-            const response = await fetchStudentsWithSubject();
-            setStudents(response)
+        async function getStudents(subjectid) {
+            const response = await getStudentPerSubject(subjectid);
+            setStudents(response.data)
         }
-        getStudents().catch(err => { console.log(err) })
-        for(const x in students){
-            setAttend(currentinput => {
-                return {
-                    ...currentinput,
-                    [students[x].id]: false
-                }
-            })
-        }
-        console.log(attend)
+        getStudents(authCtx.subjectid).catch(err => { console.log(err) })
+
+        console.log(students)
+
     }, [])
 
-    function submitAttendance(bool, studentid) {
-            
-        setAttend(currentinput => {
+    function attendance(bool, studentid) {
+
+        setAttend((x) => {
             return {
-                ...currentinput,
+                ...x,
                 [studentid]: bool
             }
+
         })
-        console.log(attend)
+
+    }
+
+    function submitAttendance() {
+        for(const i in students){
+            if(!(students[i].id in attend)){
+                console.log("Not inside" + students[i].id)
+                setAttend((x)=>{
+                    return{
+                        ...x,
+                        [students[i].id]: false
+                    }
+                })
+            }
+        }
+        for(const key in attend){
+            if(attend[key]){
+                console.log(typeof(parseInt(key)))
+                const x = {
+                    studentid: parseInt(key)
+                }
+                console.log(x)
+                 setAttendance(authCtx.subjectid, x)
+            }
+        }
+
     }
 
     return (
         <><View style={{ alignItems: 'center' }}>
             <Text>Mr {authCtx.userInfo.lastname}</Text>
 
-            <View style={{ flexDirection: 'row', marginLeft: 260 }}>
+            <View style={{ flexDirection: 'row', marginLeft: 250 }}>
                 <Text style={styles.text}>Present/Absent</Text>
+
             </View>
 
             {students.map(student => {
                 return (
-                    <View key={student.id} style={{ flexDirection: 'row' }}>
-                        <Text style={styles.title}>{student.name} </Text>
-                        <View style={{ marginLeft: 110, flexDirection: 'row' }}>
-                            <BouncyCheckbox  onPress={(c => { submitAttendance(c, student.id) })} fillColor='#608D56' style={{ padding: 4 }} />
+                    <View key={student.id} style={{ marginRight: 100, flexDirection: 'row' }}>
+                        <Text style={styles.title}>{student.firstname + " " + student.lastname} </Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <BouncyCheckbox onPress={(bool) => { attendance(bool, student.id) }} fillColor='#608D56' style={{ marginRight: -150, paddingTop: 5 }} />
+
                         </View>
                     </View>
                 )
             })}
-            <TouchableOpacity onPress={() => console.log(attend)} style={{
+            <TouchableOpacity onPress={() => { submitAttendance() }} style={{
                 backgroundColor: '#608d56',
                 borderRadius: 2, padding: 3, width: 100, margin: 15, marginLeft: 290
             }}>
@@ -80,13 +101,14 @@ export default Attendance
 const styles = StyleSheet.create({
     title: {
         fontSize: 22,
+        flex: 1,
+        marginLeft: 10
+
     },
     items: {
-        flexDirection: "row"
 
     },
     text: {
-        fontSize: 18,
-        padding: 10,
+        fontSize: 20,
     }
 })

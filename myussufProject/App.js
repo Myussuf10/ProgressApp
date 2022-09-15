@@ -22,6 +22,7 @@ import NewSubject from './components/NewSubject';
 import Attendance from './components/util/Attendance.js';
 import TeachingPage from './components/util/TeachingPage.js';
 import Header from './components/Header.js';
+import Progress from './components/Progress.js';
 import { useContext } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SubjectPage from './components/SubjectPage.js';
@@ -32,6 +33,10 @@ import LoadingOverlay from './components/util/LoadingSpinner.js';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Subject from './components/Subject.js';
+import AttendanceParent from './components/AttendanceParent.js';
+import SubjectTeacher from './components/util/SubjectTeacher.js';
+import Classess from './components/util/Classess.js';
+import SetProgress from './components/util/SetProgress.js';
 
 const Stack = createStackNavigator();
 
@@ -57,6 +62,8 @@ function ParentStack() {
       }} />
       <Stack.Screen name= "SubjectPage" component={SubjectPage}/>
       <Stack.Screen name="Subject" component={Subject}/>
+      <Stack.Screen name="Progress" component={Progress}/>
+      <Stack.Screen name='AttendanceParent' component={AttendanceParent}/>
 
     </Stack.Navigator>
   )
@@ -93,9 +100,12 @@ function TeacherStack() {
         headerRight: () => <Icon name='logout' size={30} onPress={authCtx.logout} />
       }} />
       <Stack.Screen name='Comments' component={Comments} />
+      <Stack.Screen name="SetProgress" component={SetProgress}/>
       <Stack.Screen name="TeachingPage" component={TeachingPage} />
       <Stack.Screen name="Attendance" component={Attendance} />
-
+      <Stack.Screen name= "Classess" component={Classess}/>
+      <Stack.Screen name='SubjectTeacher' component={SubjectTeacher}/>
+      <Stack.Screen name= "SubjectPage" component={SubjectPage}/>
 
     </Stack.Navigator>
   )
@@ -104,29 +114,7 @@ function TeacherStack() {
 
 function Navigation() {
   const authCtx = useContext(AuthContext);
-  const [isMounted, setIsMounted] = useState(false)
 
-  // useEffect(() => {
-  //   let isMounted = true
-  //   async function getuser() {
-  //     try {
-  //       const role = await AsyncStorage.getItem('role');
-  //       if (isMounted) {
-  //         setRole(role)
-  //       }
-
-  //     } catch (error) {
-
-  //     }
-  //   }
-  //   getuser()
-  //   return () => { isMounted = false }
-
-  // }, [])
-
-  // if (isMounted) {
-  //   return <LoadingOverlay />
-  // }
   const RoleViews = {
     ROLE_ADMIN: AdminStack,
     ROLE_TEACHER: TeacherStack,

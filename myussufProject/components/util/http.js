@@ -63,14 +63,8 @@ export function storeParents(parentsInfo) {
 
 export async function getClasInfo(sid) {
     const response = await axios.get(BACKEND_URL + `class/subject/${sid}`);
-    [{ "dow": "2022-08-07", "id": 13, "time": "22:47" }]
-    const dates = [];
-    for (const i in response.data) {
-        dates.push(response.data[i]["dow"]);
-    }
-    console.log(dates);
-
-    return dates;
+    
+    return response;
 
 }
 export async function storeStudent(parentid, info) {
@@ -95,8 +89,8 @@ export async function addSubject(subjectinfo, teacherid) {
 
 export async function fetchTeacherSubject(teacherid) {
     const response = await axios.get(BACKEND_URL + `teacher/${teacherid}`)
-    const subjects = response.data.subjects.map((element) => element.subjectname)
-    return subjects
+    //const subjects = response.data.subjects.map((element) => element.subjectname)
+    return response.data.subjects;
 }
 
 export async function getTeacherByEmail(email){
@@ -114,6 +108,10 @@ export async function getAdminByEmail(email){
     return response.data
 }
 
+export async function getStudentPerSubject(subject){
+    const response = await axios.get(BACKEND_URL + `teacher/students/${subject}`)
+    return response;
+}
 
 export async function login(email, password) {
     let body = {email:email, password:password }
@@ -154,6 +152,23 @@ export async function sentComment(studentid, teacherid, message){
 export async function getClassPerSubject(subjectid){
     const response = await axios.get(BACKEND_URL + `api/subject/${subjectid}`)
     return response.data
+}
+
+export async function getAttendancePerStudent(studentid, subjectid){
+    const response = await axios.get(BACKEND_URL + `teacher/attendance/${studentid}/${subjectid}`);
+    return response.data;
+}
+
+export async function setAttendance(classid, data){
+    
+    const response = await axios.post(BACKEND_URL + `teacher/attendance/${classid}`, data)
+    return response
+}
+
+
+export async function setProgress(studentid, classid, data){
+    const response = await axios.put(BACKEND_URL + `teacher/progress/${studentid}/${classid}`, data)
+    return response;
 }
 
 

@@ -55,7 +55,7 @@ const ParentsHome = ({navigation}) => {
                         <Text style={styles.text}>{child.name}</Text>
                         {child.subjects.map((subject=>{
                           return(
-                            <TouchableOpacity onPress={()=>navPage(child.id, subject.id)} style={{
+                            <TouchableOpacity key={subject.id} onPress={()=>navPage(child.id, subject.id)} style={{
                             backgroundColor: '#608d56',
                             borderRadius: 2, padding: 4, width: 80, margin: 2
                         }}>

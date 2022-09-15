@@ -4,7 +4,7 @@ import { Icon } from "@rneui/themed";
 import { State, TouchableOpacity } from 'react-native'
 import { Avatar } from '@rneui/base'
 import { useEffect } from 'react';
-import { fetchStudentsWithSubject, Login } from './http';
+import { fetchStudentsWithSubject, getStudentPerSubject, Login } from './http';
 import { useState } from 'react';
 import Dialog from 'react-native-dialog'
 import Attendance from './Attendance';
@@ -21,13 +21,11 @@ const TeachingPage = ({ navigation }) => {
 
 
     useEffect(() => {
-        async function getStudents() {
-            const response = await fetchStudentsWithSubject();
-            setStudents(response)
-            console.log(response)
+        async function getStudents(subjectid) {
+            const response = await getStudentPerSubject(subjectid);
+            setStudents(response.data)
         }
-        getStudents().catch(err => { console.log(err) })
-        console.log(students)
+        getStudents(authCtx.subjectid).catch(err => { console.log(err) })
 
     }, [])
 
@@ -63,7 +61,7 @@ const TeachingPage = ({ navigation }) => {
                             "https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg",
                     }} />
                 <Text style={{ fontSize: 18, padding: 5 }}>{"Mr" + " " + authCtx.userInfo.lastname}</Text>
-                <TouchableOpacity onPress={()=>{navigation.navigate("Attendance")}} style={{
+                <TouchableOpacity onPress={() => { navigation.navigate("Attendance") }} style={{
                     backgroundColor: '#608d56',
                     borderRadius: 2, padding: 4, width: 130, margin: 2
                 }}>
@@ -79,7 +77,7 @@ const TeachingPage = ({ navigation }) => {
             {students.map(student => {
                 return (
                     <View key={student.id} style={styles.items}>
-                        <Text style={styles.text}>{student.name}</Text>
+                        <Text style={styles.text}>{student.firstname + " " + student.lastname}</Text>
                         <Text style={styles.text}>{student.school}</Text>
                         {<TouchableOpacity onPress={() => showDialog(student.id)} style={{
                             backgroundColor: '#B0b311',

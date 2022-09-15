@@ -14,7 +14,9 @@ export const AuthContext = createContext({
     childId: [],
     authenticate: (token, role, email) => { },
     logout: () => { },
-    setChild: ()=>{}
+    setChild: ()=>{},
+    setSubject:()=>{},
+    setClass:()=>{}
 });
 
 function AuthProvider({ children }) {
@@ -23,6 +25,8 @@ function AuthProvider({ children }) {
     const [email, setEmail] = useState('');
     const [userInfo, setUserInfo] = useState({})
     const [childId, setChildId] = useState([])
+    const [subjectid, setsubjectId] = useState();
+    const [classid, setClassid] = useState();
 
     useEffect(() => {
         async function fetchToken() {
@@ -72,6 +76,10 @@ function AuthProvider({ children }) {
         getUser(email)
     };
 
+    function setSubject(subjectid){
+        setsubjectId(subjectid);
+    }
+
     function logout() {
         setAuthToken(null)
         setRole(null)
@@ -79,6 +87,10 @@ function AuthProvider({ children }) {
         AsyncStorage.removeItem('token')
         AsyncStorage.removeItem('role')
     };
+
+    function setClass(classid){
+        setClassid(classid)
+    }
     
     function setChild(childid,subjectid){
         setChildId([childid,subjectid])
@@ -93,7 +105,12 @@ function AuthProvider({ children }) {
         logout: logout,
         userInfo: userInfo,
         childId: childId,
-        setChild: setChild
+        setChild: setChild,
+        setSubject: setSubject,
+        subjectid: subjectid,
+        setClass: setClass,
+        classid: classid
+        
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

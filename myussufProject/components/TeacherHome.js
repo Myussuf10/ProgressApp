@@ -16,6 +16,8 @@ import { useLayoutEffect } from 'react'
 import LoadingOverlay from './util/LoadingSpinner'
 import { useMemo } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import SubjectTeacher from './util/SubjectTeacher'
+import Classess from './util/Classess'
 
 const TeacherHome = ({ navigation }) => {
   const [state, setState] = useState({});
@@ -27,26 +29,30 @@ if(subjects == null){
   return <LoadingOverlay/>
 }
   useEffect(()=>{
-    async function getsub(){
+    async function getsub(teacherid){
     try {
-      const subjects = await fetchTeacherSubject(authCtx.userInfo.id)
+      const subjects = await fetchTeacherSubject(teacherid)
       setSubjects(subjects)
-      const ter = await AsyncStorage.getItem('role')
-      console.log(typeof(authCtx.role) )
     } catch (error) {
       console.log(authCtx)
     }
   }
-  getsub()
+  getsub(authCtx.userInfo.id)
   setIsFetching(false)
+  console.log(subjects)
 
   },[authCtx])
-  
 
   if(isFetchin){
     return (
      <LoadingOverlay/>
     )
+  }
+
+  function NavTeacherPage(subject){
+    authCtx.setSubject(subject)
+    navigation.navigate("Classess")
+
   }
 
   return (
@@ -66,16 +72,18 @@ if(subjects == null){
       <View style={styles.items}>
         {subjects.map(subject => {
           return (
-            <TouchableOpacity key={subject} style={styles.button} onPress={() => { navigation.navigate(TeachingPage) }}>
-              <Text style={styles.txt}>{subject}</Text>
+            <TouchableOpacity key={subject.id} style={styles.button} onPress={() => { NavTeacherPage(subject.id) }}>
+              <Text style={styles.txt}>{subject.subjectname}</Text>
             </TouchableOpacity>
           )
         })}
-      </View>
+        </View>
     </KeyboardAvoidingView>
 
   )
+  
 }
+
 
 export default TeacherHome
 

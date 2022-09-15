@@ -8,38 +8,36 @@ import { getClassPerSubject } from './util/http';
 import { useNavigationState } from '@react-navigation/native';
 
 const SubjectPage = ({ navigation, props }) => {
-  const[timetable, setTimetable] = useState([])
-  const[childId, setChilId] = useState({})
+  const [timetable, setTimetable] = useState([])
+  const [childId, setChilId] = useState({})
   const authCtx = useContext(AuthContext)
 
-  useEffect(()=>{
-    async function getClass(subjectid){
+  useEffect(() => {
+    async function getClass(subjectid) {
       const response = await getClassPerSubject(subjectid)
       console.log(response, "ASSSSSSSSSSSSSSSSSSSSSSs")
       const x = []
-      for(const i in response){
+      for (const i in response) {
         const lesson = {
           dow: response[i].dow,
           time: response[i].time,
           topic: response[i].topic
         }
-       x.push(lesson)
+        x.push(lesson)
       }
       setTimetable(x)
-      
-    }
-    getClass(authCtx.childId[1])
 
-   // getClass(authCtx.userInfo.children[0].subjects[0].id)
-     console.log(authCtx.childId)
-    // console.log(timetable)
-      // console.log(authCtx.userInfo.children[0].subjects)
-  },[])
+    }
+    getClass(authCtx.subjectid)
+
+    console.log(authCtx.childId)
+
+  }, [])
 
   return (
     <View style={styles.container}>
-     
-     
+
+
       <View style={styles.tableContainer}>
         <View style={styles.tableRowHeader}>
           <View style={styles.tableColumnHeader}>
@@ -57,24 +55,24 @@ const SubjectPage = ({ navigation, props }) => {
             <Text style={styles.textLineItem}>Topic</Text>
           </View>
         </View>
-        
-      {timetable.map(x=>{
-        return(
-          <View style={styles.tableRow}>
-          <View style={styles.tableColumnDate}>
-            <Text style={styles.textLineItem}>{x.dow}</Text>
-          </View>
-          <View style={styles.tableColumnDate}>
-            <Text style={styles.textLineItem}>{x.time}</Text>
-          </View>
-          <View style={styles.tableColumnTotals}>
-            <Text style={styles.textLineItem}>{x.topic}</Text>
-          </View>
-        </View>
 
-        )
-      })}
-        
+        {timetable.map(x => {
+          return (
+            <View style={styles.tableRow}>
+              <View style={styles.tableColumnDate}>
+                <Text style={styles.textLineItem}>{x.dow}</Text>
+              </View>
+              <View style={styles.tableColumnDate}>
+                <Text style={styles.textLineItem}>{x.time}</Text>
+              </View>
+              <View style={styles.tableColumnTotals}>
+                <Text style={styles.textLineItem}>{x.topic}</Text>
+              </View>
+            </View>
+
+          )
+        })}
+
 
 
 
