@@ -9,9 +9,9 @@ const Progress = (navigation) => {
     const authCtx = useContext(AuthContext)
 
     useEffect(() => {
-        async function getClass(studentid, subjectid) {
-            const response = await getClassPerSubject(subjectid)
-            const rep = await getAttendancePerStudent(studentid, subjectid);
+        async function getClass(studentid, subjectid, token) {
+            const response = await getClassPerSubject(subjectid, token).catch((err)=>{console.log(err)})
+            const rep = await getAttendancePerStudent(studentid, subjectid, token).catch((err)=>{console.log(err)});
             const x = []
             for (const i in response) {
                 const m = false;
@@ -28,7 +28,7 @@ const Progress = (navigation) => {
             setAttendance(rep)
 
         }
-        getClass(authCtx.childId[0], authCtx.childId[1]);
+        getClass(authCtx.childId[0], authCtx.childId[1], authCtx.token);
     }, [])
 
     return (

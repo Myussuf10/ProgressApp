@@ -2,6 +2,7 @@ import RNDateTimePicker from '@react-native-community/datetimepicker'
 import { Button, Header } from '@rneui/themed'
 import { fonts } from '@rneui/themed/dist/config'
 import React, { useEffect } from 'react'
+import { useContext } from 'react'
 import { useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { KeyboardAvoidingView } from 'react-native'
@@ -9,6 +10,7 @@ import DatePicker from 'react-native-date-picker'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import SelectDropdown from 'react-native-select-dropdown'
 import Input from './Forms/Input'
+import { AuthContext } from './store/AuthContext'
 import { getKeyByValue } from './util/helperFunctions'
 import { fetchSubjects, setClass } from './util/http'
 
@@ -21,13 +23,14 @@ const SetUpClasses = ({ navigation }) => {
   const [chosenSub, setChosenSub] = useState({})
   const [topic, setTopic] = useState()
   const list = [];
+  const authCtx = useContext(AuthContext)
 
   useEffect(() => {
-    async function getSubjects() {
-      const subject = await fetchSubjects();
+    async function getSubjects(token) {
+      const subject = await fetchSubjects(token).catch((err)=>{console.log(err)});
       setSubjects(subject)
     }
-    getSubjects();
+    getSubjects(authCtx.token);
     console.log(subjects);
 
   }, [])
@@ -53,8 +56,8 @@ const SetUpClasses = ({ navigation }) => {
     data["dow"] = date.toISOString().split('T')[0]
     data["time"] = time.toLocaleTimeString('en-us', {hour12: false,hour:'numeric', minute:'numeric'})
     data["topic"] = topic
-    setClass(chosenSub, data)
-    console.log(data)
+    setClass(chosenSub, data, authCtx.token)
+    navigation.pop()    
   }
 
   return (
@@ -66,7 +69,7 @@ const SetUpClasses = ({ navigation }) => {
 
       <Text style={styles.header}> Set up Classes</Text>
       <View style={{ marginTop: 50 }}>
-        <SelectDropdown style={styles.box} data={list} defaultButtonText={"Select Subject"} onSelect={(x) => { setChosenSub(getKeyByValue(subjects, x)), console.log(chosenSub) }} search={true} />
+        <SelectDropdown style={styles.box} data={list} defaultButtonText={"Select Subject"} onSelect={(x) => { setChosenSub(getKeyByValue(subjects, x))}} search={true} />
 
         {openDate && (<RNDateTimePicker value={date} onChange={(x, y) => { ShowPicker1(), setDate(y) }} date={date} />)}
         {openTime && (<RNDateTimePicker value={time} onChange={(x, y) => { ShowPicker2(), setTime(y) }} mode="time" />)}

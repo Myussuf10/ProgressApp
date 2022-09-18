@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -27,16 +28,18 @@ public class Student {
     @Pattern(regexp = "^[A-Za-z]+$", message = "First name cannot have spaces")
     private String firstname;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "student_attendance",
-    joinColumns = @JoinColumn(referencedColumnName = "studentid"))
-    private Attendance attendance;
+    joinColumns =
+            {@JoinColumn(name = "student_id", referencedColumnName = "studentid")},
+    inverseJoinColumns =
+            {@JoinColumn(name = "attendance_id",referencedColumnName = "attendanceid")})
+    private Set<Attendance> attendance;
 
     @Pattern(regexp = "^[A-Za-z]+$", message = "Last name cannot have spaces")
     private String lastname;
 
-    @Past(message = "Date of birth must be in the past")
-    private Date dob;
+    private String dob;
 
     private String school;
 
@@ -46,8 +49,14 @@ public class Student {
             inverseJoinColumns = @JoinColumn(referencedColumnName = "subjectid"))
     private List<Subject> subjects;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", orphanRemoval = true)
-    private List<Comments> comments;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "student_comments",
+    joinColumns =
+            {@JoinColumn(name = "student_id", referencedColumnName = "studentid")},
+    inverseJoinColumns = {
+            @JoinColumn(name = "comments_id", referencedColumnName = "id")
+    })
+    private Set<Comments> comments;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,
     CascadeType.PERSIST, CascadeType.REFRESH})
@@ -66,12 +75,12 @@ public class Student {
         return id == student.id && Objects.equals(firstname, student.firstname) && Objects.equals(lastname, student.lastname) && Objects.equals(dob, student.dob) && Objects.equals(school, student.school) && Objects.equals(subjects, student.subjects) && Objects.equals(parent, student.parent);
     }
 
-    @JsonManagedReference(value = "student-comment")
-    public List<Comments> getComments() {
+   // @JsonManagedReference(value = "student-comment")
+    public Set<Comments> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comments> comments) {
+    public void setComments(Set<Comments> comments) {
         this.comments = comments;
     }
 
@@ -104,11 +113,11 @@ public class Student {
         this.lastname = lastname;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 
@@ -130,6 +139,14 @@ public class Student {
 
     public Parent getParent() {
         return parent;
+    }
+
+    public Set<Attendance> getAttendance() {
+        return attendance;
+    }
+
+    public void setAttendance(Set<Attendance> attendance) {
+        this.attendance = attendance;
     }
 
     public void setParent(Parent parent) {

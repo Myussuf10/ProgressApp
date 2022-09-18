@@ -1,30 +1,27 @@
-import { View, Text, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import React from 'react'
-import { TextInput } from 'react-native-gesture-handler'
-import { StyleSheet } from 'react-native'
-import { useEffect } from 'react'
-import { useContext } from 'react'
-import { AuthContext } from '../store/AuthContext'
-import { deleteComment, fetchStudentsTeacherComment, getStudentPerSubject, sentComment } from '../util/http'
-import { useState } from 'react'
+import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native'
+import React, { useEffect } from 'react'
+import { useState } from 'react';
+import { useContext } from 'react';
+import { StyleSheet } from 'react-native';
+import { AuthContext } from './store/AuthContext';
+import { deleteComment, fetchStudentsTeacherComment, getStudentPerSubject, sentComment } from './util/http';
 
-
-const Comments = ({ props, setVisible, navigation }) => {
-    const authCtx = useContext(AuthContext)
-    const [students, setStudents] = useState([]);
+const CommentParent = ({ navigation }) => {
+    const [students, setStudents] = useState([])
     const [comment, setComment] = useState([])
-    const [comm, setCom] = useState("")
+    const [comm, setComm] = useState("")
+    const authCtx = useContext(AuthContext);
 
 
     useEffect(() => {
         async function getStudents(studentid, token) {
             const response = await fetchStudentsTeacherComment(studentid, token)
-            setStudents(response)
-            console.log(response.comments)
+            setStudents(response.comments)
+            console.log(response)
             const comments = []
             for (const i in response.comments) {
                 if (response.comments[i].teacher.id == authCtx.userInfo.id &&
-                    response.comments[i].role == "ROLE_PARENT") {
+                    response.comments[i].role == "ROLE_TEACHER") {
                     const comment = {
                         date: response.comments[i].date,
                         comment: response.comments[i].comment,
@@ -39,8 +36,8 @@ const Comments = ({ props, setVisible, navigation }) => {
         }
 
         getStudents(authCtx.childId[0], authCtx.token)
-        console.log(authCtx.userInfo)
 
+        console.log(authCtx.classid)
     }, [])
 
     async function sendComment(studentid, teacherid, message, token) {
@@ -50,7 +47,7 @@ const Comments = ({ props, setVisible, navigation }) => {
             comment: comm,
             date: date.toString(),
             role: authCtx.role,
-            sentBy: "Mr " + authCtx.userInfo.lastname
+            sentBy: "Mr " + authCtx.lastname
 
         }
         const response = await sentComment(authCtx.childId[0], authCtx.userInfo.id, messagge, authCtx.token)
@@ -94,7 +91,7 @@ const Comments = ({ props, setVisible, navigation }) => {
                     return (
                         <View key={x.id} style={styles.tableRow1}>
 
-                            <View style={styles.tableColumnDate}>
+                        <View style={styles.tableColumnDate}>
                                 <Text style={styles.textLineItem}>{x.date}</Text>
                             </View>
 
@@ -105,7 +102,7 @@ const Comments = ({ props, setVisible, navigation }) => {
                             <View style={styles.tableColumnTotals}>
                                 <Text style={styles.textLineItem}>{x.comment}</Text>
                             </View>
-                            <View style={styles.tableColumnTotals}>
+                            <View style={styles.tableColumnDate}>
 
                                 <TouchableOpacity onPress={() => { deleteComments(x.id, authCtx.childId[0], authCtx.token) }} style={{
                                     alignSelf: 'stretch',
@@ -137,7 +134,7 @@ const Comments = ({ props, setVisible, navigation }) => {
 
                     <View style={styles.tableRow}>
                         <View style={styles.textinput}>
-                            <TextInput multiline={true} style={styles.input} onChangeText={(y) => { setCom(y) }} />
+                            <TextInput multiline={true} style={styles.input} onChangeText={(y) => { setComm(y) }} />
                         </View>
                     </View>
 
@@ -157,7 +154,7 @@ const Comments = ({ props, setVisible, navigation }) => {
 
     )
 }
-export default Comments
+export default CommentParent
 
 
 const styles = StyleSheet.create({

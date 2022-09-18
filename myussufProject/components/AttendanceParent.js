@@ -13,9 +13,9 @@ const AttendanceParent = (navigation) => {
     const authCtx = useContext(AuthContext)
 
     useEffect(() => {
-        async function getClass(studentid, subjectid) {
-            const response = await getClassPerSubject(subjectid)
-            const rep = await getAttendancePerStudent(studentid, subjectid);
+        async function getClass(studentid, subjectid, token) {
+            const response = await getClassPerSubject(subjectid, token)
+            const rep = await getAttendancePerStudent(studentid, subjectid, token);
             const x = []
             for (const i in response) {
                 const m = false;
@@ -32,7 +32,7 @@ const AttendanceParent = (navigation) => {
             setAttendance(rep)
 
         }
-        getClass(authCtx.childId[0], authCtx.childId[1]);
+        getClass(authCtx.childId[0], authCtx.childId[1], authCtx.token);
     }, [])
 
 
@@ -63,7 +63,7 @@ const AttendanceParent = (navigation) => {
 
                 {classes.map(x => {
                     return (
-                        <View style={styles.tableRow}>
+                        <View ket= { x.id}style={styles.tableRow}>
                             <View style={styles.tableColumnDate}>
                                 <Text style={styles.textLineItem}>{x.dow}</Text>
                             </View>

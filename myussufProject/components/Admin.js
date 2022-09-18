@@ -7,6 +7,7 @@ import { Header } from '@react-navigation/stack';
 import SignUp from './Forms/SignUp';
 import SetUpClasses from './SetUpClasses';
 import NewSubject from './NewSubject';
+import SubjectStudent from './SubjectStudent';
 
 const Admin = ({navigation}) => {
   return (
@@ -23,7 +24,7 @@ const Admin = ({navigation}) => {
       <Text>Admin</Text>
       </View>
       <View style={styles.row}>
-      <TouchableOpacity title="SignUp" onPress={()=>{navigation.navigate(SignUp)}} style={styles.button}>
+      <TouchableOpacity testID='Button' title="SignUp" onPress={()=>{navigation.navigate(SignUp)}} style={styles.button}>
           <Text style={styles.txt}> Add Students </Text>
       </TouchableOpacity>
       <TouchableOpacity title="AddTeacher" onPress={()=>{navigation.navigate('AddTeacher')}} style={styles.button}>
@@ -36,7 +37,15 @@ const Admin = ({navigation}) => {
       </TouchableOpacity>
       <TouchableOpacity title="New Subject" onPress={()=>{navigation.navigate('NewSubject')}} style={styles.button}>
           <Text style={styles.txt}> Add Subjects </Text>
+      </TouchableOpacity> 
+      
+      </View>
+      <View style={styles.row}>
+      <TouchableOpacity title="Assign Subject" onPress={()=>{navigation.navigate(SubjectStudent)}} style={styles.button}>
+          <Text style={styles.txt}> Assign subject to students </Text>
       </TouchableOpacity>
+     
+      
       </View>
       
     </KeyboardAvoidingView>
@@ -50,7 +59,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',  
       flexDirection: 'row',
-      marginTop: 100
+      marginTop: 50
       
     },
     
@@ -64,13 +73,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 20,
         color: "white",
-      },button: {
-        backgroundColor: '#608d56',
-        borderRadius: 5,
-        padding: 10,
-        width: 150,
-        height: 60,
-        margin: 5
-      },
+        },button: {
+          backgroundColor: '#608d56',
+          borderRadius: 5,
+          padding: 10,
+          height: 60,
+          margin: 5
+        },
   });
   

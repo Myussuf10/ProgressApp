@@ -44,21 +44,21 @@ function AuthProvider({ children }) {
         fetchToken();
     }, [])
 
-    async function getUser(email) {
+    async function getUser(email, token) {
         const role = await AsyncStorage.getItem('role')
-        console.log("inside gGet User +  " + role)
         try {
             if (role == "ROLE_TEACHER") {
-                const teacher = await getTeacherByEmail(email)
+                const teacher = await getTeacherByEmail(email, token)
                 setUserInfo(teacher)
             }
             else if (role == "ROLE_ADMIN") {
-                const admin = await getAdminByEmail(email)
+                const admin = await getAdminByEmail(email, token)
                 setUserInfo(admin)
             } else if (role == "ROLE_PARENT") {
-                const parent = await getParentByEmail(email)
+                const parent = await getParentByEmail(email, token)
                 setUserInfo(parent)
             }
+            console.log(userInfo)
 
         } catch (error) {
             console.log(error)
@@ -73,12 +73,8 @@ function AuthProvider({ children }) {
         const tok = await AsyncStorage.setItem('token', token) 
         setRole(role);
         setEmail(email);
-        getUser(email)
+        getUser(email, token)
     };
-
-    function setSubject(subjectid){
-        setsubjectId(subjectid);
-    }
 
     function logout() {
         setAuthToken(null)
@@ -87,6 +83,10 @@ function AuthProvider({ children }) {
         AsyncStorage.removeItem('token')
         AsyncStorage.removeItem('role')
     };
+
+    function setSubject(subjectid){
+        setsubjectId(subjectid);
+    }
 
     function setClass(classid){
         setClassid(classid)

@@ -11,13 +11,13 @@ import {
 import axios from 'axios';
 
 import { useEffect } from 'react';
-import { fetchParents, fetchSubjects } from './util/http';
 import SelectDropdown from 'react-native-select-dropdown';
 import Dropdown from './Forms/Dropdown';
 import CheckBox from '@react-native-community/checkbox'
 import AttendanceParent from './AttendanceParent';
 import Progress from './Progress';
 import { AuthContext } from './store/AuthContext';
+import CommentParent from './CommentParent';
 
 
 const Subject = ({ navigation }) => {
@@ -35,8 +35,8 @@ const Subject = ({ navigation }) => {
         <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('Progress') }} style={styles.button}>
           <Text style={styles.txt}> Progress</Text>
         </TouchableOpacity>
-        <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('SubjectPage') }} style={styles.button}>
-          <Text style={styles.txt}> Leave comment </Text>
+        <TouchableOpacity title="New Subject" onPress={() => { navigation.navigate('CommentParent') }} style={styles.button}>
+          <Text style={styles.txt}> Comments </Text>
         </TouchableOpacity>
       </View>
 

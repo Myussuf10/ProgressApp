@@ -31,6 +31,9 @@ public class ParentServImpl implements UserDetailsService {
     private ClassServImpl classServ;
     private SubjectServImpl subjectServ;
 
+    public ParentServImpl(ParentRepo parentRepo) {
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

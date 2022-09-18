@@ -15,8 +15,8 @@ const Classess = ({ navigation }) => {
     const authCtx = useContext(AuthContext)
 
     useEffect(() => {
-        async function getClasses(subjectid) {
-            const response = await getClassPerSubject(subjectid)
+        async function getClasses(subjectid, token) {
+            const response = await getClassPerSubject(subjectid, token).catch((err)=>{console.log(err)})
             const AllClasses = []
             for (const i in response) {
                 const oneClass = {
@@ -30,7 +30,7 @@ const Classess = ({ navigation }) => {
             setClasses(AllClasses)
             console.log(classes)
         }
-        getClasses(authCtx.subjectid)
+        getClasses(authCtx.subjectid, authCtx.token)
 
     }, [])
 

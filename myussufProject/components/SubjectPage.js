@@ -13,9 +13,8 @@ const SubjectPage = ({ navigation, props }) => {
   const authCtx = useContext(AuthContext)
 
   useEffect(() => {
-    async function getClass(subjectid) {
-      const response = await getClassPerSubject(subjectid)
-      console.log(response, "ASSSSSSSSSSSSSSSSSSSSSSs")
+    async function getClass(subjectid, token) {
+      const response = await getClassPerSubject(subjectid, token).catch((err)=>{console.log(err)})
       const x = []
       for (const i in response) {
         const lesson = {
@@ -28,9 +27,7 @@ const SubjectPage = ({ navigation, props }) => {
       setTimetable(x)
 
     }
-    getClass(authCtx.subjectid)
-
-    console.log(authCtx.childId)
+    getClass(authCtx.childId[0], authCtx.token)
 
   }, [])
 

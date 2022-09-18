@@ -8,6 +8,7 @@ import com.myussuf.myussufprojectspring.Repository.StudentRepo;
 import com.myussuf.myussufprojectspring.Repository.SubjectRepo;
 import com.myussuf.myussufprojectspring.exceptions.AuthException;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -18,17 +19,22 @@ import java.util.List;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@NoArgsConstructor
 public class StudentServImpl {
     private StudentRepo studentRepo;
     private SubjectServImpl subjectServ;
     private ParentServImpl parentServ;
 
+    public StudentServImpl(StudentRepo studentRepo){
+        this.studentRepo = studentRepo;
+    }
+
     @Autowired
-    public StudentServImpl(StudentRepo studentRepo, ParentRepo parentRepo, @Lazy
-            SubjectServImpl subjectServ) {
+    public StudentServImpl(StudentRepo studentRepo, @Lazy
+            SubjectServImpl subjectServ, @Lazy ParentServImpl parentServ) {
         this.studentRepo = studentRepo;
         this.subjectServ = subjectServ;
+        this.parentServ = parentServ;
     }
 
     public Student getStudent(Integer id){
@@ -59,6 +65,11 @@ public class StudentServImpl {
         }
         studentRepo.delete(studentRepo.getById(studentid));
 
+    }
+
+    public List<Student> getStudentsPerSubject(int subjectid){
+        Subject subject = subjectServ.getSubject(subjectid);
+        return studentRepo.getStudentsBySubjects(subject);
     }
 
 }

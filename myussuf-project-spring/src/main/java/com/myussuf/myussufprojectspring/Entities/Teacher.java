@@ -1,9 +1,11 @@
 package com.myussuf.myussufprojectspring.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +42,8 @@ public class Teacher implements UserDetails {
     @JsonManagedReference(value = "teacher-subject")
     private List<Subject> subjects = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+            mappedBy = "teacher", orphanRemoval = true)
     private List<Comments> comments;
 
     public List<Subject> getSubjects() {
@@ -104,7 +107,7 @@ public class Teacher implements UserDetails {
         this.email = email;
     }
 
-    @JsonManagedReference(value = "teacher-comments")
+    @JsonBackReference(value = "teacher-comments")
     public List<Comments> getComments() {
         return comments;
     }

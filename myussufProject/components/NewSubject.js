@@ -1,5 +1,6 @@
 import { Text } from '@rneui/themed'
 import React from 'react'
+import { useContext } from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, View } from 'react-native'
@@ -8,6 +9,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import AddTeacher from './AddTeacher'
 import Dropdown from './Forms/Dropdown'
 import Input from './Forms/Input'
+import { AuthContext } from './store/AuthContext'
 import { addSubject, fetchTeacher } from './util/http'
 
 function NewSubject({ navigation }) {
@@ -15,13 +17,14 @@ function NewSubject({ navigation }) {
   const [teachers, setTeacher] = useState()
   const allteacher = []
   const [teacherid, setTeacherId] = useState()
+  const authCtx = useContext(AuthContext)
 
   useEffect(() => {
-    async function getTeachers() {
-      const x = await fetchTeacher();
+    async function getTeachers(token) {
+      const x = await fetchTeacher(token).catch((err)=>{console.log(err)});
       setTeacher(x)
     }
-    getTeachers()
+    getTeachers(authCtx.token)
     console.log(teachers)
   }, [])
 
@@ -46,8 +49,8 @@ function NewSubject({ navigation }) {
   }
 
   async function sendData(){
-    const response = await addSubject(subject, teacherid);
-       
+    const response = await addSubject(subject, teacherid, authCtx.token).catch((err)=>{console.log(err)});
+    navigation.pop();
   }
 
 

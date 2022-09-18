@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Input from './Forms/Input';
 import { TouchableOpacity } from 'react-native';
 import { signUpTeacher } from './util/http';
+import { useContext } from 'react';
+import { AuthContext } from './store/AuthContext';
 
 const AddTeacher = ({navigation}) => {
   const [inputValues, setInputValues] = useState({
@@ -12,6 +14,7 @@ const AddTeacher = ({navigation}) => {
     email: '',
     password: ""
   });
+  const authCtx = useContext(AuthContext)
 
   const inputHandler=(inputId, enteredValue)=>{
     setInputValues((currentInput)=>{
@@ -29,7 +32,8 @@ const AddTeacher = ({navigation}) => {
       ...x,
        password:y,
     }});
-    signUpTeacher(inputValues);
+    console.log(inputValues)
+    signUpTeacher(inputValues, authCtx.token);
     navigation.pop();
   }
 

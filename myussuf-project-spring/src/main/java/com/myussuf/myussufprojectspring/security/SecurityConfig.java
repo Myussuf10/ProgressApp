@@ -3,27 +3,20 @@ package com.myussuf.myussufprojectspring.security;
 import com.myussuf.myussufprojectspring.Services.AdminServImpl;
 import com.myussuf.myussufprojectspring.Services.ParentServImpl;
 import com.myussuf.myussufprojectspring.Services.TeacherServImpl;
-import com.myussuf.myussufprojectspring.security.userDetailsServices.AdminDetailService;
-import com.myussuf.myussufprojectspring.security.userDetailsServices.CustomAuthFilter;
-import com.myussuf.myussufprojectspring.security.userDetailsServices.ParentDetailService;
 //import com.myussuf.myussufprojectspring.security.userDetailsServices.TeacherDetailService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -42,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("Mohamed")
                 .password(passwordEncoder.encode("123"))
-                .authorities("USER_ADMIN");
+                .authorities("ROLE_ADMIN");
 
         auth.userDetailsService(teacherServ).passwordEncoder(passwordEncoder);
         auth.userDetailsService(parentServ).passwordEncoder(passwordEncoder);
@@ -52,16 +45,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("/student/**")
-                    .hasAnyAuthority("ROLE_TEACHER")
-                    .antMatchers("/management").hasAnyAuthority("ROLE_ADMIN")
-                    .antMatchers("/**").permitAll();
-
+        http.csrf().disable();
+        http.addFilter(new CustomAuthFilter(authenticationManagerBean()));
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.authorizeRequests().antMatchers("/login/**").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/management/**").hasAnyAuthority("ROLE_ADMIN")
+                .and()
+                .authorizeRequests().antMatchers("api/**").hasAnyAuthority("ROLE_PARENT","ROLE_TEACHER").and()
+                .authorizeRequests().antMatchers("/adminteacher/**").hasAnyAuthority("ROLE_TEACHER","ROLE_ADMIN")
+                .and()
+        .authorizeRequests().antMatchers("/teacher/**").hasAnyAuthority("ROLE_TEACHER")
+                .and()
+                .authorizeRequests().antMatchers("/parent/**").hasAnyAuthority("ROLE_PARENT");
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-            http.addFilter(new CustomAuthFilter(authenticationManagerBean()));
-            http.formLogin();
-            http.httpBasic();
-            http.csrf().disable();
+        http.authorizeRequests().anyRequest().authenticated();
+
 
 
     }

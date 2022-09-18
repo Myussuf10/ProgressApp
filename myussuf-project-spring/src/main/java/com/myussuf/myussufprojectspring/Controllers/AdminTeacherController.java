@@ -2,7 +2,9 @@ package com.myussuf.myussufprojectspring.Controllers;
 
 import com.myussuf.myussufprojectspring.Entities.Class;
 
+import com.myussuf.myussufprojectspring.Entities.Student;
 import com.myussuf.myussufprojectspring.Services.ClassServImpl;
+import com.myussuf.myussufprojectspring.Services.StudentServImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +14,11 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/class")
+@RequestMapping("/adminteacher")
 @AllArgsConstructor
-public class ClassController {
+public class AdminTeacherController {
     private ClassServImpl classServ;
+    private StudentServImpl studentServ;
 
     @GetMapping("{id}")
     public Class getClass(@PathVariable int id){
@@ -27,10 +30,9 @@ public class ClassController {
         return classServ.getClassBySubject(id);
     }
 
-    @PostMapping("/class/{subjectId}")
-    public void setupClass(
-             @RequestBody Class clas,
-             @PathVariable int subjectId) throws ParseException {
-        classServ.setUpClass(clas, subjectId);
+    @GetMapping("/students")
+    public List<Student> getAllStudents() {
+        return  studentServ.getAllStudents();
     }
+
 }

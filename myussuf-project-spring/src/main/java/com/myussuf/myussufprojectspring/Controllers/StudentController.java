@@ -21,11 +21,7 @@ public class StudentController {
         this.studentServImpl = studentServImpl;
     }
 
-    @GetMapping("{id}")
-    public Student getStudent(@PathVariable int id){
-        return studentServImpl.getStudent(id);
-    }
-//
+    //
 //    public List<Student> getStudents(){}
 
     @DeleteMapping("/remove/{studentid}")
@@ -33,15 +29,8 @@ public class StudentController {
         studentServImpl.deleteStudent(studentid);
     }
 
-    @GetMapping("/student/students")
-    public List<Student> getAllStudents() {
-      return  studentServImpl.getAllStudents();
-    }
 
-    @PostMapping("/student/{parentid}")
-    public Integer addStudent(@PathVariable int parentid , @Valid @RequestBody Student student){
-        studentServImpl.saveStudent(student, parentid);
-        return studentServImpl.getStudent(student.getId()).getId();
-    }
+
+
 
 }

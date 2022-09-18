@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface TeacherRepo extends CrudRepository<Teacher, Integer> {
 
     Teacher findByEmail(String email);
+    boolean existsByEmail(String email);
 }

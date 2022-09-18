@@ -3,8 +3,10 @@ import React from 'react'
 import Input from './Input'
 import Parent from '../Parent'
 import { useState } from 'react'
-import { storeStudent, fetchSubjects, assigSub } from '../util/http'
+import { storeStudent, fetchSubjects, fetchParents,} from '../util/http'
 import { useEffect } from 'react'
+import { useContext } from 'react'
+import { AuthContext } from '../store/AuthContext'
 
 
 const SignUp = ({navigation}) => {
@@ -20,16 +22,13 @@ const SignUp = ({navigation}) => {
   const [Science, setScience] = useState(false); 
   const [AvailSubjects, setSubjects] = useState({})
   const [studentSubject, setStudentSubjects] = useState([])
+  const authCtx = useContext(AuthContext);
 
   
   useEffect(()=>{
-    async function getSubjects(){
-     const allSubjects = await fetchSubjects();
-      setSubjects(allSubjects)
-    }
-    getSubjects();
-
-  }, [])
+       
+    console.log(authCtx.token)
+  }, [Parents])
  
 
   const inputHandler=(inputId, enteredValue)=>{
@@ -43,10 +42,14 @@ const SignUp = ({navigation}) => {
 
 
    async function Assign() {
-      student.dob= new Date(student.dob);
-      const sudid = await storeStudent(Parents, student);
+      //student.dob= new Date(student.dob);
+      // var pattern = /(\d{2})\-(\d{2})\-(\d{4})/;
+      // const date = new Date(student.dob)
+      // console.log(date.getTime())
+      const sudid = await storeStudent(Parents, student, authCtx.token);
+      console.log(sudid)
+      navigation.pop()
           
-    
   }
  
   

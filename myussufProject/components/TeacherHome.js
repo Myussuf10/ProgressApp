@@ -7,7 +7,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native'
 import { Agenda, Calendar, CalendarList } from 'react-native-calendars'
 import { TouchableOpacity } from 'react-native'
 import { Row, Table } from 'react-native-table-component'
-import { fetchTeacher, fetchTeacherSubject, getClasInfo, getTeacherByEmail } from './util/http'
+import { fetchTeacherSubject, getTeacherByEmail } from './util/http'
 import TeachingPage from './util/TeachingPage'
 import { Header as Fet } from './Header'
 import { useContext } from 'react'
@@ -29,17 +29,17 @@ if(subjects == null){
   return <LoadingOverlay/>
 }
   useEffect(()=>{
-    async function getsub(teacherid){
+    async function getsub(teacherid, token){
     try {
-      const subjects = await fetchTeacherSubject(teacherid)
+      const subjects = await fetchTeacherSubject(teacherid, token)
       setSubjects(subjects)
     } catch (error) {
-      console.log(authCtx)
+      console.log(error)
     }
   }
-  getsub(authCtx.userInfo.id)
+  console.log(authCtx.userInfo)
+  getsub(authCtx.userInfo.id, authCtx.token)
   setIsFetching(false)
-  console.log(subjects)
 
   },[authCtx])
 

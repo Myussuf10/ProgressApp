@@ -14,11 +14,11 @@ const SetProgress = ({navigation}) => {
 
 
   useEffect(() => {
-      async function getStudents(subjectid) {
-          const response = await getStudentPerSubject(subjectid);
+      async function getStudents(subjectid, token) {
+          const response = await getStudentPerSubject(subjectid, token);
           setStudents(response.data)
       }
-      getStudents(authCtx.subjectid).catch(err => { console.log(err) })
+      getStudents(authCtx.subjectid, authCtx.token).catch(err => { console.log(err) })
 
 
   }, [])
@@ -28,10 +28,10 @@ const SetProgress = ({navigation}) => {
       const progress = {
         understanding: rating[key]
       }
-      const response = await setProgress(key, authCtx.classid, progress).catch(err=>{console.log(err)})
+      const response = await setProgress(key, authCtx.classid, progress, authCtx.token).catch(err=>{console.log(err)})
       console.log(response)
     }
-    
+    navigation.pop()
   }
 
   function updateRating(studentid, progress){

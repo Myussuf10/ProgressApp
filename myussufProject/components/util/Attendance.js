@@ -14,11 +14,11 @@ const Attendance = ({ navigation }) => {
 
 
     useEffect(() => {
-        async function getStudents(subjectid) {
-            const response = await getStudentPerSubject(subjectid);
+        async function getStudents(subjectid, token) {
+            const response = await getStudentPerSubject(subjectid, token).catch(err => { console.log(err) });
             setStudents(response.data)
         }
-        getStudents(authCtx.subjectid).catch(err => { console.log(err) })
+        getStudents(authCtx.subjectid, authCtx.token).catch(err => { console.log(err) })
 
         console.log(students)
 
@@ -36,28 +36,29 @@ const Attendance = ({ navigation }) => {
 
     }
 
-    function submitAttendance() {
-        for(const i in students){
-            if(!(students[i].id in attend)){
+    async function submitAttendance() {
+        for (const i in students) {
+            if (!(students[i].id in attend)) {
                 console.log("Not inside" + students[i].id)
-                setAttend((x)=>{
-                    return{
+                setAttend((x) => {
+                    return {
                         ...x,
                         [students[i].id]: false
                     }
                 })
             }
         }
-        for(const key in attend){
-            if(attend[key]){
-                console.log(typeof(parseInt(key)))
+        for (const key in attend) {
+            if (attend[key]) {
+                console.log(typeof (parseInt(key)))
                 const x = {
                     studentid: parseInt(key)
                 }
                 console.log(x)
-                 setAttendance(authCtx.subjectid, x)
+                await setAttendance(authCtx.subjectid, x, authCtx.token).catch(err => { console.log(err) })
             }
         }
+        navigation.pop()
 
     }
 

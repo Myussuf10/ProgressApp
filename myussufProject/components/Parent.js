@@ -15,19 +15,23 @@ import { useEffect } from 'react';
 import { fetchParents } from './util/http';
 import SelectDropdown from 'react-native-select-dropdown';
 import Dropdown from './Forms/Dropdown';
+import { useContext } from 'react';
+import { AuthContext } from './store/AuthContext';
 
 
 const Parent = ({setParent}) => {
   const [state, setState] = useState({});
   const parents = []
+  const authCtx = useContext(AuthContext)
 
 
   useEffect(()=>{
-    async function getParents(){
-     const parents = await fetchParents();
+    async function getParents(token){
+     const parents = await fetchParents(token).catch((err)=>{console.log(err)});
       setState(parents)
-    }
-    getParents();
+     }
+      console.log(authCtx.token)
+    getParents(authCtx.token);
 
   }, [])
   for(var i in state){

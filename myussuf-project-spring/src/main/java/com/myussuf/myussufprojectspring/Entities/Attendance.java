@@ -1,5 +1,6 @@
 package com.myussuf.myussufprojectspring.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +9,9 @@ import lombok.Singular;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -17,14 +20,25 @@ public class Attendance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+            @Column(name = "attendanceid")
     int id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attendance", orphanRemoval = true)
-    private List<Student> students = new ArrayList<>();
+    @ManyToMany(mappedBy = "attendance")
+    private Set<Student> student = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "classid")
     private Class register;
+
+    private String understanding;
+
+    public String getUnderstanding() {
+        return understanding;
+    }
+
+    public void setUnderstanding(String understanding) {
+        this.understanding = understanding;
+    }
 
     public int getId() {
         return id;
@@ -43,11 +57,12 @@ public class Attendance {
         this.id = id;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    @JsonBackReference(value = "students_attendance")
+    public Set<Student> getStudent() {
+        return student;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public void setStudent(Set<Student> student) {
+        this.student = student;
     }
 }

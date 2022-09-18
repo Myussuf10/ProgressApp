@@ -29,12 +29,10 @@ const Login = ({ navigation }) => {
  
   async function handleSubmit(email,password) {
     setIsAuthenticating(true)
-    let isMounted = true
     try {
       const response = await login(email, password);
       authCtx.authenticate(response.accestoken, response.userrole, email);
       const role = await AsyncStorage.getItem('role')
-      console.log(role);
     } catch (error) {
       Alert.alert('Authentication Failed', 'Please try again')
       setIsAuthenticating(false)

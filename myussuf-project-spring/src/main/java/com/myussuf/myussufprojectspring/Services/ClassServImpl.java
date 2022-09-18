@@ -36,6 +36,8 @@ public class ClassServImpl implements ClassServ{
         return classRepo.getClassById(id);
     }
 
+    public Class findClassById(int id){return classRepo.findById(id).get();}
+
     @Override
     public List<Class> getClassBySubject(int SubjectId) {
         List<Class> x = new ArrayList<>();
@@ -53,5 +55,7 @@ public class ClassServImpl implements ClassServ{
         return classRepo.findClassesBySubjectId(subjectid);
     }
 
-
+    public Class saveClass(Class lesson){
+        return classRepo.save(lesson);
+    }
 }

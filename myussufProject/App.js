@@ -20,13 +20,9 @@ import TeacherHome from './components/TeacherHome.js';
 import SetUpClasses from './components/SetUpClasses.js';
 import NewSubject from './components/NewSubject';
 import Attendance from './components/util/Attendance.js';
-import TeachingPage from './components/util/TeachingPage.js';
-import Header from './components/Header.js';
 import Progress from './components/Progress.js';
 import { useContext } from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SubjectPage from './components/SubjectPage.js';
-import { useEffect } from 'react';
 import AuthProvider from './components/store/AuthContext.js';
 import { AuthContext } from './components/store/AuthContext.js'
 import LoadingOverlay from './components/util/LoadingSpinner.js';
@@ -37,6 +33,9 @@ import AttendanceParent from './components/AttendanceParent.js';
 import SubjectTeacher from './components/util/SubjectTeacher.js';
 import Classess from './components/util/Classess.js';
 import SetProgress from './components/util/SetProgress.js';
+import SubjectStudent from './components/SubjectStudent.js';
+import CommentList from './components/util/CommentList.js';
+import CommentParent from './components/CommentParent.js';
 
 const Stack = createStackNavigator();
 
@@ -64,18 +63,14 @@ function ParentStack() {
       <Stack.Screen name="Subject" component={Subject}/>
       <Stack.Screen name="Progress" component={Progress}/>
       <Stack.Screen name='AttendanceParent' component={AttendanceParent}/>
+      <Stack.Screen name='CommentParent' component={CommentParent}/>
 
     </Stack.Navigator>
-  )
-
-}
-
+  )}
 function AdminStack() {
   const authCtx = useContext(AuthContext)
-
   return (
     <Stack.Navigator screenOptions={globalScreenOptions}>
-
       <Stack.Screen name="Admin" component={Admin} options={{
         headerRight: () => <Icon name='logout' size={30} onPress={authCtx.logout} />
       }} />
@@ -85,32 +80,26 @@ function AdminStack() {
       <Stack.Screen name="Parent" component={Parent} />
       <Stack.Screen name="NewSubject" options={{ title: "New Subject" }} component={NewSubject} />
       <Stack.Screen name="SetUpClasses" options={{ title: "Classes" }} component={SetUpClasses} />
+      <Stack.Screen name='SubjectStudent' options={{title: "Assing Subject"}} component={SubjectStudent}/>
     </Stack.Navigator>
-  )
-
-}
+  )}
 
 function TeacherStack() {
   const authCtx = useContext(AuthContext)
   return (
     <Stack.Navigator screenOptions={globalScreenOptions}>
-
-
       <Stack.Screen name="Teacher's Home Page" component={TeacherHome} options={{
         headerRight: () => <Icon name='logout' size={30} onPress={authCtx.logout} />
       }} />
       <Stack.Screen name='Comments' component={Comments} />
       <Stack.Screen name="SetProgress" component={SetProgress}/>
-      <Stack.Screen name="TeachingPage" component={TeachingPage} />
       <Stack.Screen name="Attendance" component={Attendance} />
       <Stack.Screen name= "Classess" component={Classess}/>
       <Stack.Screen name='SubjectTeacher' component={SubjectTeacher}/>
       <Stack.Screen name= "SubjectPage" component={SubjectPage}/>
-
+      <Stack.Screen name="CommentList" component={CommentList}/>
     </Stack.Navigator>
-  )
-}
-
+  )}
 
 function Navigation() {
   const authCtx = useContext(AuthContext);

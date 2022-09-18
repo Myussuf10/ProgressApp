@@ -13,6 +13,8 @@ import { AuthContext } from '../store/AuthContext';
 import SubjectPage from '../SubjectPage';
 import Attendance from './Attendance';
 import SetProgress from './SetProgress';
+import Comments from '../Forms/Comments';
+import CommentList from './CommentList';
 
 
 const SubjectTeacher = ({ navigation }) => {
@@ -30,8 +32,8 @@ const SubjectTeacher = ({ navigation }) => {
         <TouchableOpacity title="Progress" onPress={() => {navigation.navigate(SetProgress) }} style={styles.button}>
           <Text style={styles.txt}> Progress</Text>
         </TouchableOpacity>
-        <TouchableOpacity title="New Subject" onPress={() => {null }} style={styles.button}>
-          <Text style={styles.txt}> Leave comment </Text>
+        <TouchableOpacity title="Comments" onPress={() => {navigation.navigate(CommentList) }} style={styles.button}>
+          <Text style={styles.txt}> Comments </Text>
         </TouchableOpacity>
       </View>
 

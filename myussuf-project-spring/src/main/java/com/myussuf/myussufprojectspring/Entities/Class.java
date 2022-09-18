@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "class")
@@ -29,8 +29,12 @@ public class Class {
     //@JsonFormat(pattern = "yyyy-mm-dd")
     private String dow;
 
-    @OneToOne(mappedBy = "register")
-    private Attendance attendance;
+//    @OneToMany(mappedBy = "classes", orphanRemoval = true)
+//    @JsonBackReference(value = "comments_classes")
+//    private Set<Comments> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "register", fetch =FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Attendance> attendance;
 
     @Column(name = "classtime")
     //@Temporal(TemporalType.TIME)
@@ -45,11 +49,52 @@ public class Class {
     private Subject subject;
 
     @JsonBackReference(value = "attendance-register")
-    public Attendance getAttendance() {
+    public List<Attendance> getAttendance() {
         return attendance;
     }
 
-    public void setAttendance(Attendance attendance) {
+    public void setAttendance(List<Attendance> attendance) {
         this.attendance = attendance;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDow() {
+        return dow;
+    }
+
+    public void setDow(String dow) {
+        this.dow = dow;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
 }
