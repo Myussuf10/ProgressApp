@@ -105,7 +105,14 @@ export function setClass(subjectid, info, token) {
         }
     })
 }
-
+export async function addAdministrator(subjectinfo, token) {
+    const response = axios.post(BACKEND_URL + `management/admin`, subjectinfo, {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    return response;
+}
 
 export async function addSubject(subjectinfo, teacherid, token) {
     const response = axios.post(BACKEND_URL + `management/subject/${teacherid}`, subjectinfo, {

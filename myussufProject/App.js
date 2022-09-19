@@ -36,6 +36,8 @@ import SetProgress from './components/util/SetProgress.js';
 import SubjectStudent from './components/SubjectStudent.js';
 import CommentList from './components/util/CommentList.js';
 import CommentParent from './components/CommentParent.js';
+import AddAdmin from './components/AddAdmin.js';
+
 
 const Stack = createStackNavigator();
 
@@ -81,6 +83,7 @@ function AdminStack() {
       <Stack.Screen name="NewSubject" options={{ title: "New Subject" }} component={NewSubject} />
       <Stack.Screen name="SetUpClasses" options={{ title: "Classes" }} component={SetUpClasses} />
       <Stack.Screen name='SubjectStudent' options={{title: "Assing Subject"}} component={SubjectStudent}/>
+      <Stack.Screen name='AddAdmin' component={AddAdmin}/>
     </Stack.Navigator>
   )}
 
