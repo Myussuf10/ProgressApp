@@ -46,7 +46,7 @@ class StudentServImplTest {
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         underTest = new StudentServImpl(studentRepo);
-        parentServ = new ParentServImpl(parentRepo);
+//        parentServ = new ParentServImpl(parentRepo);
         Parent x = new Parent("Johnson","Philip","jphillip@gmail.com","123");
         Student student1 = new Student(
                 1,

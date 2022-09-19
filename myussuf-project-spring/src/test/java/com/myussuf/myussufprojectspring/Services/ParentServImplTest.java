@@ -27,10 +27,10 @@ class ParentServImplTest {
     private AutoCloseable autoCloseable;
 
     @BeforeEach
-    void setup(){
-        AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new ParentServImpl(parentRepo);
-    }
+//    void setup(){
+//        AutoCloseable autoCloseable = MockitoAnnotations.openMocks(this);
+//        underTest = new ParentServImpl(parentRepo);
+//    }
 
     @AfterEach
     void tearDown() throws Exception {

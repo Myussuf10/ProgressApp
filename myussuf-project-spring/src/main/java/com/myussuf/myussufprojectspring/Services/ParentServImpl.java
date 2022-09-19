@@ -23,7 +23,6 @@ import java.util.List;
 @Service
 @Transactional
 @AllArgsConstructor
-@NoArgsConstructor
 public class ParentServImpl implements UserDetailsService, ParentServ {
     private ParentRepo parentRepo;
     private StudentRepo studentRepo;
@@ -33,11 +32,7 @@ public class ParentServImpl implements UserDetailsService, ParentServ {
     private ClassServImpl classServ;
     private SubjectServImpl subjectServ;
 
-    public ParentServImpl(ParentRepo parentRepo) {
-    }
-
-
-    @Override
+        @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Parent parent = parentRepo.findByEmail(s);
         if(parent==null){
