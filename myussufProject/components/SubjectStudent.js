@@ -12,12 +12,12 @@ import SelectDropdown from 'react-native-select-dropdown'
 import Input from './Forms/Input'
 import { AuthContext } from './store/AuthContext'
 import { getKeyByValue } from './util/helperFunctions'
-import {assignSubjectToStudent, fetchAllstudents, fetchSubjects } from './util/http'
+import {assignSubjectToStudent, fetchAllstudents, fetchSubjects, setStudentPerSubject } from './util/http'
 
 const SubjectStudent = ({ navigation }) => {
     const [subjects, setSubjects] = useState({})
-    const [chosenSub, setChosenSub] = useState()
-    const [studentId, setStudentId] = useState()
+    const [chosenSub, setChosenSub] = useState("")
+    const [studentId, setStudentId] = useState("")
     const [students, setStudents] = useState({})
     const subjectlist = [];
     const studentlist = [];
@@ -49,11 +49,11 @@ const SubjectStudent = ({ navigation }) => {
     }
 
     const Confirm = () => {
-        const sub = parseInt(chosenSub);
-        const stud = parseInt(studentId)
-        assignSubjectToStudent(chosenSub,studentId,authCtx.token).catch(err =>console.log(err))
+        //const sub = parseInt(chosenSub);
+        //const stud = parseInt(studentId)
+        setStudentPerSubject(chosenSub,studentId,authCtx.token.trim()).catch(err =>console.log(err))
         //navigation.pop()
-        console.log(sub)
+        console.log(chosenSub + authCtx.token)
     }
 
     return (

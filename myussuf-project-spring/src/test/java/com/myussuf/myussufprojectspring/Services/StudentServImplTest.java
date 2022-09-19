@@ -3,6 +3,7 @@ package com.myussuf.myussufprojectspring.Services;
 import com.myussuf.myussufprojectspring.Entities.*;
 import com.myussuf.myussufprojectspring.Repository.ParentRepo;
 import com.myussuf.myussufprojectspring.Repository.StudentRepo;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -37,11 +38,27 @@ class StudentServImplTest {
         autoCloseable.close();
     }
 
+    @Before(value = "a")
+    public void before(){
+
+    }
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         underTest = new StudentServImpl(studentRepo);
         parentServ = new ParentServImpl(parentRepo);
+        Parent x = new Parent("Johnson","Philip","jphillip@gmail.com","123");
+        Student student1 = new Student(
+                1,
+                "Mohamed",
+                new HashSet<Attendance>(),
+                "Yussuf",
+                "10-10-1999",
+                "Hounslow",
+                new ArrayList<Subject>(),
+                new HashSet<Comments>(),
+                x
+        );
     }
 
     @Test
@@ -51,6 +68,7 @@ class StudentServImplTest {
     @Test
     void getAllStudents() {
         //when
+
         underTest.getAllStudents();
         verify(studentRepo).findAll();
         //method of repo was invoked using that repo

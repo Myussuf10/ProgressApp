@@ -20,7 +20,7 @@ const SetProgress = ({navigation}) => {
       }
       getStudents(authCtx.subjectid, authCtx.token).catch(err => { console.log(err) })
 
-
+      console.log(students)
   }, [])
 
  async function setUnderstanding(){
@@ -50,13 +50,16 @@ const SetProgress = ({navigation}) => {
       <View style={styles.tableContainer}>
         <View style={styles.tableRowHeader}>
           <View style={styles.tableColumnHeader}>
-            <Text style={styles.textHeader}>Set Progress</Text>
+            <Text style={styles.textHeader}>Progress</Text>
           </View>
         </View>
         <View style={styles.tableRow}>
           
           <View style={styles.tableColumnDate}>
             <Text style={styles.textLineItem}>Student Name</Text>
+          </View>
+          <View style={styles.tableColumnTotals}>
+            <Text style={styles.textLineItem}>School</Text>
           </View>
           <View style={styles.tableColumnTotals}>
             <Text style={styles.textLineItem}>Set Progress</Text>
@@ -68,10 +71,11 @@ const SetProgress = ({navigation}) => {
               <View style={styles.tableColumnDate}>
                 <Text style={styles.textLineItem}>{x.firstname + " " + x.lastname}</Text>
               </View>
-              
+              <View style={styles.tableColumnTotals}>
+              <Text style={styles.textLineItem}>{x.school}</Text>
+              </View>
               <View style={styles.tableColumnTotals}>
               <TextInput style={styles.input} onChangeText={(y)=>{updateRating(x.id,y)}} />
-
               </View>
             </View>
 

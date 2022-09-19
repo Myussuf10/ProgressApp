@@ -27,7 +27,7 @@ const SubjectPage = ({ navigation, props }) => {
       setTimetable(x)
 
     }
-    getClass(authCtx.childId[0], authCtx.token)
+    getClass(authCtx.classid, authCtx.token)
 
   }, [])
 

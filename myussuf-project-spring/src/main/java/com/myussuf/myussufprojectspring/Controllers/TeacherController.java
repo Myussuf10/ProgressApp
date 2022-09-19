@@ -67,16 +67,6 @@ public class TeacherController {
         return teacherServImpl.updateUnderstanding(studentid, classid,updatedmap);
     }
 
-//    @GetMapping("comments/{studentid}/{teacherid}")
-//    public List<Comments> getCommentsByTeacherAndStudent(@PathVariable int studentid, @PathVariable int teacherid){
-//        return teacherServImpl.findCommentsByTeacherAndStudent(studentid,teacherid);
-//    }
-//
-//    @GetMapping("comments/{teacherid}")
-//    public List<Comments> getCommentsByTeacher(@PathVariable int teacherid){
-//        return teacherServImpl.findCommentsByTeacher(teacherid);
-//    }
-
     @GetMapping("student/{studentid}")
     public Student getStudentById(@PathVariable int studentid){
         return studentServ.getStudent(studentid);

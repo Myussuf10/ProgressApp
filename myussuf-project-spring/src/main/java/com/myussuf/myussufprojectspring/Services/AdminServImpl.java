@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 @Transactional
 @Configurable
 @AllArgsConstructor
-public class AdminServImpl implements UserDetailsService {
+public class AdminServImpl implements UserDetailsService, AdminServ {
     private AdminRepo adminRepo;
     private StudentServImpl studentServ;
     private SubjectServImpl subjectServ;
@@ -49,6 +49,7 @@ public class AdminServImpl implements UserDetailsService {
      }
         return new User(admin.getEmail(),admin.getPassword(),admin.getAuthorities());
     }
+    @Override
     public Admin saveAdmin(Admin admin){
 
         String em= "Auto generated email";
@@ -61,17 +62,19 @@ public class AdminServImpl implements UserDetailsService {
         admin.setAuthorities(authoritiesList);
        return adminRepo.save(admin);
     }
-
+    @Override
     public List<Admin> getAdmins(){
         List<Admin> x = new ArrayList<>();
         adminRepo.findAll().forEach(x::add);
         return x;
     }
 
+    @Override
     public Admin getAdminByEmail(String email){
         return adminRepo.findByEmail(email);
     }
 
+    @Override
     public Student updateStudent(int id, Map<Object, Object> updatedmap){
         Student student = studentServ.getStudent(id);
         updatedmap.forEach((key,value)->{
@@ -82,6 +85,7 @@ public class AdminServImpl implements UserDetailsService {
         return student;
     }
 
+    @Override
     public Student setSubject(int subjectid, int studentid){
         Student student = studentServ.getStudent(studentid);
         Subject subject = subjectServ.getSubject(subjectid);

@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @Transactional
 @NoArgsConstructor
-public class StudentServImpl {
+public class StudentServImpl implements StudentServ {
     private StudentRepo studentRepo;
     private SubjectServImpl subjectServ;
     private ParentServImpl parentServ;
@@ -36,7 +36,7 @@ public class StudentServImpl {
         this.subjectServ = subjectServ;
         this.parentServ = parentServ;
     }
-
+    @Override
     public Student getStudent(Integer id){
      return studentRepo.findById(id).get();
     }
@@ -46,17 +46,17 @@ public class StudentServImpl {
             studentRepo.findAll().forEach(student -> students.add(student));
             return students;
     }
-
+    @Override
     public void saveStudent(Student student, int parentid) {
         Parent x = parentServ.getParent(parentid);
         student.setParent(x);
         studentRepo.save(student);
     }
-
+    @Override
     public void assignStudentToSub(Student student){
         studentRepo.save(student);
     }
-
+    @Override
     public void deleteStudent(int studentid){
         Student student = studentRepo.getById(studentid);
 
@@ -66,7 +66,7 @@ public class StudentServImpl {
         studentRepo.delete(studentRepo.getById(studentid));
 
     }
-
+    @Override
     public List<Student> getStudentsPerSubject(int subjectid){
         Subject subject = subjectServ.getSubject(subjectid);
         return studentRepo.getStudentsBySubjects(subject);

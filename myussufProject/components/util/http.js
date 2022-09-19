@@ -229,6 +229,18 @@ export async function sentComment(studentid, teacherid, message, token) {
     return response
 }
 
+export async function setStudentPerSubject(subid,studid,token){
+
+    const response = await fetch(BACKEND_URL + `management/student/${subid}/${studid}`, {
+        method: 'PATCH',
+        headers: {
+            "Authorization": `Bearer ${token}`
+
+        }
+    })
+    return response;
+}
+
 export async function assignSubjectToStudent(subjectid, studentid, token) {
     const response = await axios.patch(BACKEND_URL + `management/student/${subjectid}/${studentid}`, {
         headers: {

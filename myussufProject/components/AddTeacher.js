@@ -12,7 +12,7 @@ const AddTeacher = ({navigation}) => {
     firstname: '',
     lastname: '',
     email: '',
-    password: ""
+    password: ''
   });
   const authCtx = useContext(AuthContext)
 
@@ -21,17 +21,13 @@ const AddTeacher = ({navigation}) => {
       return{
         ...currentInput,
         [inputId]:enteredValue,
+        password: "admin123"
       };
     });
   }
 
   const Assign =()=>{
-    const y = Math.random().toString(36).substring(2,7);
-    setInputValues((x)=>{
-      return{
-      ...x,
-       password:y,
-    }});
+    
     console.log(inputValues)
     signUpTeacher(inputValues, authCtx.token);
     navigation.pop();

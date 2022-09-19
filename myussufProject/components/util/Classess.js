@@ -28,7 +28,7 @@ const Classess = ({ navigation }) => {
                 AllClasses.push(oneClass)
             }
             setClasses(AllClasses)
-            console.log(classes)
+            console.log(authCtx.subjectid)
         }
         getClasses(authCtx.subjectid, authCtx.token)
 

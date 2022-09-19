@@ -51,10 +51,12 @@ public class ClassServImpl implements ClassServ{
         return classRepo.save(clas);
     }
 
+    @Override
     public List<Class> findClassesBySubjectId(int subjectid){
         return classRepo.findClassesBySubjectId(subjectid);
     }
 
+    @Override
     public Class saveClass(Class lesson){
         return classRepo.save(lesson);
     }

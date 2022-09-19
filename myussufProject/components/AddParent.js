@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Input from './Forms/Input'
 import { storeParents } from './util/http';
 import SignUp from './Forms/SignUp';
+import { AuthContext } from './store/AuthContext';
 
 const AddParent =({navigation}) => {
   const [inputValues, setInputValues] = useState({
@@ -11,20 +12,21 @@ const AddParent =({navigation}) => {
     email: '',
     password: ""
   });
+  const authCtx = useContext(AuthContext)
 
   const inputHandler=(inputId, enteredValue)=>{
     setInputValues((currentInput)=>{
       return{
         ...currentInput,
         [inputId]:enteredValue,
-        password: Math.random().toString(36).substring(2,7)
+        password: "admin123"
       };
     });
   }
 
   const Assign =()=>{
- 
-    storeParents(inputValues);
+    
+    storeParents(inputValues, authCtx.token);
     navigation.pop();
   }
 
@@ -47,11 +49,6 @@ const AddParent =({navigation}) => {
         onChangeText: inputHandler.bind(this,'email'),
          value: inputValues.email,
       }} />
-      {/* <Input label="Password" textInputConfig={{
-        placeholder: 'Password', 
-        onChangeText: inputHandler.bind(this,'password'),
-         value: inputValues.password,
-      }} /> */}
       <TouchableOpacity
         title="Submit"
         onPress={() => {Assign()

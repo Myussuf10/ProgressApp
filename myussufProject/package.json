@@ -19,14 +19,17 @@
     "@rneui/themed": "^4.0.0-rc.1",
     "@types/react-native": "^0.67.3",
     "axios": "^0.27.2",
+    "babel-plugin-dotenv-import": "^2.2.0",
     "base-64": "^1.0.0",
     "buffer": "^6.0.3",
+    "dotenv": "^16.0.2",
     "jetifier": "^2.0.0",
     "moment": "^2.29.4",
     "qs": "^6.11.0",
     "react": "17.0.2",
     "react-native": "0.67.4",
     "react-native-base64": "^0.2.1",
+    "react-native-bouncy-checkbox": "^3.0.4",
     "react-native-calendars": "^1.1286.0",
     "react-native-date-picker": "^4.2.5",
     "react-native-datepicker": "^1.7.2",
@@ -53,7 +56,10 @@
   "jest": {
     "preset": "react-native",
     "transformIgnorePatterns": [
-      "node_modules/(?!(@react-native|react-native)/)"
+      "/node_modules/(?!(@react-native|react-native)/).*/"
+    ],
+    "setupFiles": [
+      "./components/jestSetup.js"
     ]
   }
 }

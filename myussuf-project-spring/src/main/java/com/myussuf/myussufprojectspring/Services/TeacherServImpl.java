@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 @Service
 @Transactional
-public class TeacherServImpl implements UserDetailsService {
+public class TeacherServImpl implements UserDetailsService, TeacherServ {
     private TeacherRepo teacherRepo;
     private EmailSenderServ emailSenderServ;
     private PasswordEncoder passwordEncoder;
@@ -60,21 +60,21 @@ public class TeacherServImpl implements UserDetailsService {
         this.attendanceRepo = attendanceRepo;
         this.subjectServ = subjectServ;
     }
-
+    @Override
     public List<Teacher> getAllTeachers(){
         List<Teacher> teachers = new ArrayList<>();
         teacherRepo.findAll().forEach(x->teachers.add(x));
         return teachers;
     }
-
+    @Override
     public Teacher getTeacherByEmail(String email){
         return teacherRepo.findByEmail(email);
     }
-
+    @Override
     public Teacher getTeacher(Integer id){
         return teacherRepo.findById(id).get();
     }
-
+    @Override
     public void saveTeacher(Teacher teacher){
         String em= "Auto generated email";
         String pass = "Your Generated password is " + teacher.getPassword();
@@ -87,7 +87,7 @@ public class TeacherServImpl implements UserDetailsService {
         teacher.setAuthorities(authoritiesList);
         teacherRepo.save(teacher);
     }
-
+    @Override
     public Student setComments(int studentid, int teacherid, CommentsHelper comments){
         Student student = studentServ.getStudent(studentid);
         Comments comments1 = new Comments();
@@ -102,7 +102,7 @@ public class TeacherServImpl implements UserDetailsService {
         commentsRepo.save(comments1);
         return student;
     }
-
+    @Override
     public Attendance recordAttendance(HelperAttendance student, int classid){
         Class lesson = classServ.getClassDetails(classid);
         Student s = studentServ.getStudent(student.getStudentid());
@@ -113,35 +113,20 @@ public class TeacherServImpl implements UserDetailsService {
         attendance.setUnderstanding(student.getUnderstanding());
         s.getAttendance().add(attendance);
         return attendanceRepo.save(attendance);
-//        } else{
-//            Attendance attendance = attendanceRepo.findAttendanceByRegister(lesson);
-//            attendance.setStudent(s);
-//            attendanceRepo.save(attendance);
-//            return attendance;}
-
-        //        List<Student> students = new ArrayList<>();
-
-//        for(int x: student){
-//            students.add(studentServ.getStudent(x));
-//        }
-
-//        for (Student y: students){
-//            attendance. getStudents().add(y);
-//        }
 
     }
-
+    @Override
     public List<Attendance> getattendance(){
         List<Attendance> attendances = new ArrayList<>();
         attendanceRepo.findAll().forEach(attendance1 -> attendances.add(attendance1));
 
         return attendances;
     }
-
+    @Override
     public List<Student> getStudentsBySubject(int subjectid){
         return studentServ.getStudentsPerSubject(subjectid);
     }
-
+    @Override
     public Attendance updateUnderstanding(int studentid, int classid, Map<Object, Object> updatedmap){
         Student s = studentServ.getStudent(studentid);
         Class clas = classServ.getClassDetails(classid);
@@ -153,7 +138,7 @@ public class TeacherServImpl implements UserDetailsService {
         });
         return x;
     }
-
+    @Override
     public List<Attendance> getSingleAttendance(int student, int subjectid){
         Student s = studentServ.getStudent(student);
         Subject x = subjectServ.getSubject(subjectid);
@@ -162,19 +147,7 @@ public class TeacherServImpl implements UserDetailsService {
         attendance.forEach(System.out::println);
         return attendance;
     }
-//    public List<Comments> findCommentsByTeacherAndStudent(int studentid, int teacherid){
-//        Student student = studentServ.getStudent(studentid);
-//        Set<Student> students = new HashSet<>();
-//        students.add(studentServ.getStudent(studentid));
-//        Teacher teacher = teacherRepo.findById(teacherid).get();
-//        return commentsRepo.findCommentsByTeacherAndStudentIn(teacher,students);
-//    }
-
-//    public List<Comments> findCommentsByTeacher(int teacherid){
-//        Teacher teacher = teacherRepo.findById(teacherid).get();
-//        return commentsRepo.findCommentsByTeacher(teacher);
-//    }
-
+    @Override
     public void deleteComment(int commentid, int studentid){
         Comments x = commentsRepo.findById(commentid).get();
         Student student = studentServ.getStudent(studentid);

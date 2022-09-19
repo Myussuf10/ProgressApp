@@ -7,6 +7,7 @@ import com.myussuf.myussufprojectspring.Repository.StudentRepo;
 import com.myussuf.myussufprojectspring.exceptions.AuthException;
 import com.myussuf.myussufprojectspring.security.userDetailsServices.AuthorityService;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +23,8 @@ import java.util.List;
 @Service
 @Transactional
 @AllArgsConstructor
-public class ParentServImpl implements UserDetailsService {
+@NoArgsConstructor
+public class ParentServImpl implements UserDetailsService, ParentServ {
     private ParentRepo parentRepo;
     private StudentRepo studentRepo;
     private EmailSenderServ emailSenderServ;
@@ -44,16 +46,19 @@ public class ParentServImpl implements UserDetailsService {
         return new User(parent.getEmail(),parent.getPassword(), parent.getAuthorities());
     }
 
-    public Parent getParent(Integer id){
+    @Override
+    public Parent getParent(int id){
         return parentRepo.findById(id).get();
     }
 
+    @Override
     public List<Parent> getParents(){
         List<Parent> x = new ArrayList<>();
         parentRepo.findAll().forEach(x::add);
         return x;
     }
 
+    @Override
     public void saveParent(Parent parent) {
         //if(!student.getSubjects() == null)
         String em= "Auto generated email";
@@ -67,10 +72,12 @@ public class ParentServImpl implements UserDetailsService {
         parentRepo.save(parent);
     }
 
+    @Override
     public Parent getParentByEmail(String email){
         return parentRepo.findByEmail(email);
     }
 
+    @Override
     public List<Class> getClassBySubjectId(int subjectid){
         return classServ.findClassesBySubjectId(subjectid);
     }

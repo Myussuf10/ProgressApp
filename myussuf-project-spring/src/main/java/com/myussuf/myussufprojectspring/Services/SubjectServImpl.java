@@ -17,21 +17,24 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Transactional
-public class SubjectServImpl {
+public class SubjectServImpl implements SubjectServ {
     private SubjectRepo subjectRepo;
     private StudentServImpl studentServ;
     private @Lazy TeacherServImpl teacherServ;
 
+    @Override
     public void saveSubject(Subject subject, int id){
         Teacher x = teacherServ.getTeacher(id);
         subject.setTeacher(x);
         subjectRepo.save(subject);
     }
 
+    @Override
     public Subject getSubject(int subjectid){
         return subjectRepo.findById(subjectid).get();
     }
 
+    @Override
     public List<Subject> getAllSubjects(){
         List<Subject> subjects = new ArrayList<>();
         subjectRepo.findAll().forEach(subject -> subjects.add(subject));

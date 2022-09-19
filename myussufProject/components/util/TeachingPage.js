@@ -13,7 +13,7 @@ import { AuthContext } from '../store/AuthContext';
 import Comments from '../Forms/Comments';
 
 
-const TeachingPage = ({ navigation }) => {
+const  TeachingPage= ({ navigation }) => {
     const [students, setStudents] = useState([])
     const [visible, setVisible] = useState(false)
     const [comments, setComment] = useState({ studentid: "", comments: "" })
@@ -21,14 +21,13 @@ const TeachingPage = ({ navigation }) => {
 
 
     useEffect(() => {
-        async function getStudents(subjectid) {
-            const response = await getStudentPerSubject(subjectid);
+        async function getStudents(subjectid, token) {
+            const response = await getStudentPerSubject(subjectid, token);
             setStudents(response.data)
         }
-        getStudents(authCtx.subjectid).catch(err => { console.log(err) })
+        getStudents(authCtx.subjectid, authCtx.token).catch(err => { console.log(err) })
 
     }, [])
-
 
 
     const showDialog = (x) => {

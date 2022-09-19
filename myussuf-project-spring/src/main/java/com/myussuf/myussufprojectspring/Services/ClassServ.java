@@ -16,4 +16,8 @@ public interface ClassServ {
 
     Class setUpClass(Class clas, int subjectId) throws ParseException;
 
+    List<Class> findClassesBySubjectId(int subjectid);
+
+    Class saveClass(Class lesson);
+
 }
